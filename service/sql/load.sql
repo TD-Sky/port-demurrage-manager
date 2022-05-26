@@ -2,6 +2,7 @@ drop table if exists load;
 
 create table load
 (
+    id serial primary key,
     order_number varchar(20)                    -- 订单号
         check (order_number like 'PO# %')
         not NULL,
@@ -12,3 +13,5 @@ create table load
     constraint order_number_fk foreign key (order_number)
         references shipping_order(num)
 );
+
+create index load_date_index on load (load_date);
