@@ -1,5 +1,12 @@
 <script  setup lang="ts">
-import { Fold } from '@element-plus/icons-vue'
+// import barStore from '../store';
+import { Fold } from '@element-plus/icons-vue';
+
+// function toggle_sidebar() {
+//     barStore.$patch({
+//         collapsed: !barStore.collapsed,
+//     })
+// }
 </script>
 
 <template>

@@ -1,18 +1,22 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { Document, Menu as IconMenu, Setting, } from '@element-plus/icons-vue'
+// import barStore from '../store';
+// import { storeToRefs } from 'pinia';
+import { Document, Menu as IconMenu, Setting, } from '@element-plus/icons-vue';
 
-const isCollapse = ref(false)
+//let { collapsed } = storeToRefs(barStore);
+
 const handleOpen = (key: string, keyPath: string[]) => {
     console.log(key, keyPath)
 }
 const handleClose = (key: string, keyPath: string[]) => {
     console.log(key, keyPath)
 }
+
 </script>
 
 <template>
-    <el-menu default-active="1" class="siderbar" :collapse="isCollapse" @open="handleOpen" @close="handleClose">
+    <!-- <el-menu default-active="1" class="siderbar" :collapse="collapsed" @open="handleOpen" @close="handleClose"> -->
+    <el-menu default-active="1" class="siderbar" @open="handleOpen" @close="handleClose">
 
         <el-menu-item index="1">
             <el-icon>
