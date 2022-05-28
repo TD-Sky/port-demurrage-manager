@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Sidebar from './sidebar.vue'
-import Header from './header.vue'
+import Topbar from './topbar.vue'
 </script>
 
 <template>
@@ -11,9 +11,11 @@ import Header from './header.vue'
             </el-aside>
             <el-container>
                 <el-header>
-                    <Header />
+                    <Topbar />
                 </el-header>
-                <el-main>Main</el-main>
+                <el-main>
+                    <slot />
+                </el-main>
             </el-container>
         </el-container>
     </div>

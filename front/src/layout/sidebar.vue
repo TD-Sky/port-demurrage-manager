@@ -5,38 +5,31 @@ import { Document, Menu as IconMenu, Setting, } from '@element-plus/icons-vue';
 
 //let { collapsed } = storeToRefs(barStore);
 
-const handleOpen = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath)
-}
-const handleClose = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath)
-}
-
 </script>
 
 <template>
     <!-- <el-menu default-active="1" class="siderbar" :collapse="collapsed" @open="handleOpen" @close="handleClose"> -->
-    <el-menu default-active="1" class="siderbar" @open="handleOpen" @close="handleClose">
+    <el-menu default-active="this.$route.path" class="siderbar" router>
 
-        <el-menu-item index="1">
+        <el-menu-item index="/store">
             <el-icon>
                 <icon-menu />
             </el-icon>
-            <template #title>仓储</template>
+            <span slot="title">仓储</span>
         </el-menu-item>
 
-        <el-menu-item index="2">
+        <el-menu-item index="/load">
             <el-icon>
                 <document />
             </el-icon>
-            <template #title>订单</template>
+            <span slot="title">订单</span>
         </el-menu-item>
 
-        <el-menu-item index="3">
+        <el-menu-item index="/fee">
             <el-icon>
                 <setting />
             </el-icon>
-            <template #title>堆存费</template>
+            <span slot="title">堆存费</span>
         </el-menu-item>
 
     </el-menu>
