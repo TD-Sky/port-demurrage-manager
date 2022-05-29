@@ -27,3 +27,14 @@ func Get_store(ctx *gin.Context) {
 
     ctx.JSON(http.StatusOK, stores)
 }
+
+func Put_store(ctx *gin.Context) {
+	db, _ := ctx.Get("db")
+	var store models.PutStore
+
+	ctx.ShouldBind(&store)
+
+    dba.Update_store(db.(*sqlx.DB), store)
+
+    ctx.Status(http.StatusOK)
+}

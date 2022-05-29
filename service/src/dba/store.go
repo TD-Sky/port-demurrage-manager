@@ -17,3 +17,11 @@ func Get_store(db *sqlx.DB, stores *[]models.GetStore) {
 		`select * from store
          order by store_date ASC`)
 }
+
+func Update_store(db *sqlx.DB, store models.PutStore) {
+	db.NamedExec(
+		`update store set (store_date, license_plate_number, stocks, store_ton)
+            = (:store_date, :license_plate_number, :stocks, :store_ton)
+            where id = :id`,
+		store)
+}

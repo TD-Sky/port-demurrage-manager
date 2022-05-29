@@ -8,4 +8,5 @@ import (
 func General_router(server *gin.Engine) {
 	server.POST("/store", handlers.Post_store)
 	server.GET("/store", handlers.Get_store)
+	server.PUT("/store", handlers.Put_store)
 }
