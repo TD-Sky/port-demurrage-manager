@@ -18,3 +18,12 @@ func Post_store(ctx *gin.Context) {
 
 	ctx.Status(http.StatusOK)
 }
+
+func Get_store(ctx *gin.Context) {
+	db, _ := ctx.Get("db")
+	var stores []models.GetStore
+
+    dba.Get_store(db.(*sqlx.DB), &stores)
+
+    ctx.JSON(http.StatusOK, stores)
+}
