@@ -1,13 +1,12 @@
 package main
 
 import (
-	"log"
-	"service/routers"
-	"service/state"
-
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
+	"log"
+	"service/middleware"
+	"service/routers"
 )
 
 func main() {
@@ -15,10 +14,11 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	server := gin.Default()
-	state := state.State{Database: db}
 
-	routers.General_router(server, &state)
+	server := gin.Default()
+	server.Use(middleware.StateContext(db))
+
+	routers.General_router(server)
 
 	server.Run()
 }
