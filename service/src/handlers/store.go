@@ -23,7 +23,7 @@ func Get_store(ctx *gin.Context) {
 	db, _ := ctx.Get("db")
 	var stores []models.GetStore
 
-    dba.Get_store(db.(*sqlx.DB), &stores)
+    dba.Select_stores(db.(*sqlx.DB), &stores)
 
     ctx.JSON(http.StatusOK, stores)
 }

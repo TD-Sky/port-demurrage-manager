@@ -12,7 +12,7 @@ func Insert_store(db *sqlx.DB, store models.PostStore) {
 		store)
 }
 
-func Get_store(db *sqlx.DB, stores *[]models.GetStore) {
+func Select_stores(db *sqlx.DB, stores *[]models.GetStore) {
 	db.Select(stores,
 		`select * from store
          order by store_date ASC`)
