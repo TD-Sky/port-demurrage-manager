@@ -9,7 +9,7 @@ export const router = createRouter({
         },
         {
             path: "/store",
-            component: { template: '<div>Store</div>' },
+            component: () => import("../components/store.vue")
         },
         {
             path: "/load",

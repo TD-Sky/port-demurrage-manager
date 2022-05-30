@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import Layout from './layout/index.vue';
+import Store from './components/store.vue'
 </script>
 
 <template>
-    <Layout>
-        Never, Never say give up.
-    </Layout>
+        <Store />
 </template>
