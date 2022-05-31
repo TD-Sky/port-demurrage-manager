@@ -1,15 +1,26 @@
-import { createApp } from 'vue';
-import ElementPlus from 'element-plus';
-import 'element-plus/dist/index.css';
-import { createPinia } from 'pinia';
-import { router } from "./router/index";
-import axios from 'axios';
-import App from './App.vue';
+import { createApp, Directive } from "vue"
+import router from "./router"
+import "@/router/permission"
+import store from "./store"
+import App from "./App.vue"
+import ElementPlus from "element-plus"
+import loadSvg from "@/icons"
+import * as directives from "@/directives"
 
-axios.defaults.baseURL = "/api";
+import "uno.css"
+import "normalize.css"
+import "element-plus/dist/index.css"
+import "element-plus/theme-chalk/dark/css-vars.css"
+import "@/styles/index.scss"
 
-const app = createApp(App);
+const app = createApp(App)
+/** element-plus 组件完整引入 */
+app.use(ElementPlus)
+/** 加载全局 svg */
+loadSvg(app)
+/** 自定义指令 */
+Object.keys(directives).forEach((key) => {
+  app.directive(key, (directives as { [key: string]: Directive })[key])
+})
 
-app.use(ElementPlus, createPinia(), router)
-    .provide("$axios", axios)
-    .mount('#app')
+app.use(store).use(router).mount("#app")

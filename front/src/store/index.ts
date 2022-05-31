@@ -1,12 +1,5 @@
-import { defineComponent } from "vue";
-import { bar_store } from "./bar";
+import { createPinia } from "pinia"
 
-export default defineComponent({
-    setup() {
-        const barStore = bar_store()
+const store = createPinia()
 
-        return {
-            barStore,
-        }
-    }
-})
+export default store
