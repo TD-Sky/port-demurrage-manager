@@ -18,7 +18,7 @@ func main() {
 	server := gin.Default()
 	server.Use(middleware.StateContext(db))
 
-	routers.General_router(server)
+	routers.General(server)
 
 	server.Run()
 }
