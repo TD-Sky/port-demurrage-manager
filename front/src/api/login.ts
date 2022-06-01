@@ -8,7 +8,7 @@ interface IUserRequestData {
 /** 登录，返回 token */
 export function accountLogin(data: IUserRequestData) {
   return request({
-    url: "users/login",
+    url: "/users/login",
     method: "post",
     data
   })
@@ -16,7 +16,7 @@ export function accountLogin(data: IUserRequestData) {
 /** 获取用户详情 */
 export function userInfoRequest() {
   return request({
-    url: "users/info",
+    url: "/users/info",
     method: "post"
   })
 }
