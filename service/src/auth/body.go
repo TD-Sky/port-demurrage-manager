@@ -1,16 +1,18 @@
 package auth
 
+import "github.com/gin-gonic/gin"
+
 type Body struct {
 	code uint16
 	msg  string
-	data map[string]interface{}
+	data gin.H
 }
 
 func Make_Body(code uint16, msg string) Body {
 	return Body{
 		code,
 		msg,
-		map[string]interface{}{},
+		gin.H{},
 	}
 }
 
@@ -18,8 +20,8 @@ func (self *Body) Set_data(k string, v interface{}) {
 	self.data[k] = v
 }
 
-func (self *Body) To_json() map[string]interface{} {
-	res := map[string]interface{}{
+func (self *Body) To_json() gin.H {
+	res := gin.H{
 		"code": self.code,
 		"msg":  self.msg,
 	}
