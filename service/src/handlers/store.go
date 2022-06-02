@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 	"net/http"
+	"service/auth"
 	"service/dba"
 	"service/models"
 )
@@ -23,9 +24,12 @@ func Get_store(ctx *gin.Context) {
 	db, _ := ctx.Get("db")
 	var stores []models.GetStore
 
-    dba.Select_stores(db.(*sqlx.DB), &stores)
+	dba.Select_stores(db.(*sqlx.DB), &stores)
 
-    ctx.JSON(http.StatusOK, stores)
+    body := auth.Make_Body(20000)
+    body.Set_data("stores", stores)
+
+	ctx.JSON(http.StatusOK, body.To_json())
 }
 
 func Put_store(ctx *gin.Context) {
@@ -34,7 +38,7 @@ func Put_store(ctx *gin.Context) {
 
 	ctx.ShouldBind(&store)
 
-    dba.Update_store(db.(*sqlx.DB), store)
+	dba.Update_store(db.(*sqlx.DB), store)
 
-    ctx.Status(http.StatusOK)
+	ctx.Status(http.StatusOK)
 }

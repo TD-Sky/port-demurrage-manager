@@ -14,10 +14,10 @@ func Login(ctx *gin.Context) {
 
 	if user.Correct() {
 		token_string, _ := auth.Gen(user.Name)
-		body = auth.Make_Body(0, "success")
+		body = auth.Make_Body(0)
 		body.Set_data("accessToken", token_string)
 	} else {
-		body = auth.Make_Body(1145, "failed")
+		body = auth.Make_Body(1145)
 	}
 
 	ctx.JSON(http.StatusOK, body.To_json())
@@ -26,7 +26,7 @@ func Login(ctx *gin.Context) {
 func Info(ctx *gin.Context) {
     username, _ := ctx.Get("username")
 
-	body := auth.Make_Body(20000, "success")
+	body := auth.Make_Body(20000)
 
 	user_info := auth.UserInfo{
 		Name:  username.(string),

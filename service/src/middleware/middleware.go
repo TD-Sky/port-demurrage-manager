@@ -20,13 +20,13 @@ func Authenticate() gin.HandlerFunc {
 		token_string := ctx.Request.Header.Get("X-Access-Token")
 
 		if token_string == "" {
-			body = auth.Make_Body(1145, "X-Access-Token is empty")
+			body = auth.Make_Body(1145)
 			ctx.JSON(http.StatusOK, body.To_json())
 			ctx.Abort()
 		}
 
 		if user_pl, err := auth.Parse(token_string); err != nil {
-			body = auth.Make_Body(1145, "Invalid token")
+			body = auth.Make_Body(1145)
 			ctx.JSON(http.StatusOK, body.To_json())
 			ctx.Abort()
 		} else {

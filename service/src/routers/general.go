@@ -2,15 +2,15 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	"service/handlers"
+	"service/middleware"
 )
 
 func General(server *gin.Engine) {
+	authm := middleware.Authenticate()
+
 	// 入库信息的路由
-	server.POST("/store", handlers.Post_store)
-	server.GET("/store", handlers.Get_store)
-	server.PUT("/store", handlers.Put_store)
+	store(server, authm)
 
 	// 特权路由
-	privileged(server)
+	privileged(server, authm)
 }
