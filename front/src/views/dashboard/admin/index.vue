@@ -1,16 +1,7 @@
 <script setup lang="ts">
+import { Storage } from '@/models/index';
 import { request } from '@/utils/service';
 import { onBeforeMount, ref } from "vue";
-
-type Storage = {
-    id: number,
-    store_date: string,
-    license_plate_number: string,
-    stocks: number,
-    store_ton: number,
-    duration: number,
-    fee: number,
-}
 
 const storages = ref<Storage[]>([])
 

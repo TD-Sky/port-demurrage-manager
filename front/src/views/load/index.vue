@@ -1,19 +1,18 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from 'vue';
+import { reactive, onBeforeMount, ref } from 'vue';
 import { request } from '@/utils/service';
 import { Edit } from '@element-plus/icons-vue'
-
-type Load = {
-    id: number,
-    order_number: string,
-    load_date: string,
-    loads: number,
-    load_ton: number,
-    business_number: string,
-    lading_bill_number: string,
-}
+import { Load } from '@/models/index';
+import LoadForm from './form.vue';
 
 const loads = ref<Load[]>([]);
+const display_form = ref(false);
+const buffer = reactive(<Load>{});
+
+const edit_load = (row: Load) => {
+    display_form.value = true;
+    Object.assign(buffer, row)
+}
 
 onBeforeMount(() => {
     request({
@@ -23,10 +22,6 @@ onBeforeMount(() => {
         loads.value = resp.data.loads
     })
 })
-
-const handleEdit = (index: number, row: Load) => {
-    console.log(index, row)
-}
 </script>
 
 <template>
@@ -42,10 +37,31 @@ const handleEdit = (index: number, row: Load) => {
 
             <el-table-column label="编辑">
                 <template #default="scope">
-                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)" :icon="Edit" />
+                    <el-button size="small" @click="edit_load(scope.row)" :icon="Edit" />
                 </template>
             </el-table-column>
 
         </el-table>
+
+        <LoadForm :display_form="display_form" :buffer="buffer" />
     </component>
+
 </template>
+
+<style scoped>
+.el-button--text {
+    margin-right: 15px;
+}
+
+.el-select {
+    width: 300px;
+}
+
+.el-input {
+    width: 300px;
+}
+
+.dialog-footer button:first-child {
+    margin-right: 10px;
+}
+</style>
