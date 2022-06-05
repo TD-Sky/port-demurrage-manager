@@ -8,7 +8,7 @@ export type Storage = {
     fee: number,
 }
 
-export type Load = {
+export type GetLoad = {
     id: number,
     order_number: string,
     load_date: string,
@@ -16,4 +16,11 @@ export type Load = {
     load_ton: number,
     business_number: string,
     lading_bill_number: string,
+}
+
+export type PutLoad = {
+    id: number,
+    load_date: string,
+    loads: number,
+    load_ton: number,
 }
