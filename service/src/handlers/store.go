@@ -17,7 +17,9 @@ func Post_store(ctx *gin.Context) {
 
 	dba.Insert_store(db.(*sqlx.DB), store)
 
-	ctx.Status(http.StatusOK)
+	body := auth.Make_Body(20000)
+
+	ctx.JSON(http.StatusOK, body.To_json())
 }
 
 func Get_store(ctx *gin.Context) {
@@ -44,5 +46,7 @@ func Put_store(ctx *gin.Context) {
 
 	dba.Update_store(db.(*sqlx.DB), store)
 
-	ctx.Status(http.StatusOK)
+	body := auth.Make_Body(20000)
+
+	ctx.JSON(http.StatusOK, body.To_json())
 }

@@ -16,6 +16,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
             }
         ]
     },
+
     {
         path: "/login",
         component: () => import("@/views/login/index.vue"),
@@ -23,19 +24,24 @@ export const constantRoutes: Array<RouteRecordRaw> = [
             hidden: true
         }
     },
+
     {
         path: "/",
+        redirect: "/storage",
+    },
+
+    {
+        path: "/storage",
         component: Layout,
-        redirect: "/dashboard",
         children: [
             {
-                path: "dashboard",
-                component: () => import("@/views/dashboard/index.vue"),
-                name: "Dashboard",
+                path: "",
+                component: () => import("@/views/storage/index.vue"),
+                name: "Store",
                 meta: {
-                    title: "首页",
+                    title: "库存信息",
                     icon: "dashboard",
-                    affix: true
+                    affix: true,
                 }
             }
         ]
@@ -58,21 +64,6 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         ]
     },
 
-    {
-        path: "/link",
-        component: Layout,
-        children: [
-            {
-                path: "https://juejin.cn/post/7089377403717287972",
-                component: () => { },
-                name: "Link",
-                meta: {
-                    title: "外链",
-                    icon: "link"
-                }
-            }
-        ]
-    },
     {
         path: "/menu",
         component: Layout,

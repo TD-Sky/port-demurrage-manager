@@ -1,4 +1,4 @@
-export type Storage = {
+export type GetStorage = {
     id: number,
     store_date: string,
     license_plate_number: string,
@@ -6,6 +6,14 @@ export type Storage = {
     store_ton: number,
     duration: number,
     fee: number,
+}
+
+export type PutStorage = {
+    id: number,
+    store_date: string,
+    license_plate_number: string,
+    stocks: number,
+    store_ton: number,
 }
 
 export type GetLoad = {

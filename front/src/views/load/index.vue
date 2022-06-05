@@ -51,8 +51,8 @@ onBeforeMount(get_loads)
 </script>
 
 <template>
-    <component>
-        <el-table :data="loads" style="width: 100%" border>
+    <div class="app-container">
+        <el-table :data="loads" style="width: 100%" border :fit="false">
             <el-table-column prop="load_date" label="日期" width="120" />
             <el-table-column prop="loads" label="件数" width="120" />
             <el-table-column prop="load_ton" label="吨数" width="120" />
@@ -67,5 +67,5 @@ onBeforeMount(get_loads)
                 </template>
             </el-table-column>
         </el-table>
-    </component>
+    </div>
 </template>
