@@ -10,7 +10,8 @@ import (
 )
 
 func main() {
-	db, err := sqlx.Connect("postgres", "user=postgres dbname=port-demurrage-db sslmode=disable")
+	db, err := sqlx.Connect("postgres",
+		"user=postgres dbname=port-demurrage-db sslmode=disable TimeZone=Asia/Shanghai")
 	if err != nil {
 		log.Fatalln(err)
 	}
