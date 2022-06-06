@@ -20,28 +20,41 @@ type GetLoad struct {
 }
 
 type PutLoad struct {
-	ID        uint32  `json:"id" db:"id"`
-	Load_date string  `json:"load_date" db:"load_date"`
-	Loads     uint32  `json:"loads" db:"loads"`
-	Load_ton  float64 `json:"load_ton" db:"load_ton"`
+	ID        int32     `db:"id"`
+	Load_date time.Time `db:"load_date"`
+	Loads     int32     `db:"loads"`
+	Load_ton  float64   `db:"load_ton"`
 }
 
 type PostLoad struct {
-	Load_date string  `json:"load_date" db:"load_date"`
-	Loads     uint32  `json:"loads" db:"loads"`
-	Load_ton  float64 `json:"load_ton" db:"load_ton"`
+	Load_date time.Time `db:"load_date"`
+	Loads     int32     `db:"loads"`
+	Load_ton  float64   `db:"load_ton"`
 }
 
 /* 序列化与反序列化的过渡结构体 */
 
 type getLoad struct {
-	ID                 int32
-	Order_number       string
-	Load_date          string
-	Loads              int32
-	Load_ton           float64
-	Business_number    string
-	Lading_bill_number int64
+	ID                 int32   `json:"id"`
+	Order_number       string  `json:"order_number"`
+	Load_date          string  `json:"load_date"`
+	Loads              int32   `json:"loads"`
+	Load_ton           float64 `json:"load_ton"`
+	Business_number    string  `json:"business_number"`
+	Lading_bill_number int64   `json:"lading_bill_number"`
+}
+
+type putLoad struct {
+	ID        int32   `json:"id"`
+	Load_date string  `json:"load_date"`
+	Loads     int32   `json:"loads"`
+	Load_ton  float64 `json:"load_ton"`
+}
+
+type postLoad struct {
+	Load_date string  `json:"load_date"`
+	Loads     int32   `json:"loads"`
+	Load_ton  float64 `json:"load_ton"`
 }
 
 func (self GetLoad) MarshalJSON() ([]byte, error) {
@@ -55,12 +68,7 @@ func (self GetLoad) MarshalJSON() ([]byte, error) {
 		Lading_bill_number: self.Lading_bill_number,
 	}
 
-	if data, err := json.Marshal(load); err != nil {
-		fmt.Println(err)
-		return nil, err
-	} else {
-		return data, nil
-	}
+	return json.Marshal(load)
 }
 
 func (self *GetLoad) UnmarshalJSON(data []byte) error {
@@ -77,4 +85,38 @@ func (self *GetLoad) UnmarshalJSON(data []byte) error {
 	self.Lading_bill_number = load.Lading_bill_number
 
 	return nil
+}
+
+func (self PutLoad) MarshalJSON() ([]byte, error) {
+	load := putLoad{
+		ID:        self.ID,
+		Loads:     self.Loads,
+		Load_ton:  self.Load_ton,
+		Load_date: utils.Date_string(&self.Load_date),
+	}
+
+	return json.Marshal(load)
+}
+
+func (self *PutLoad) UnmarshalJSON(data []byte) error {
+	var load putLoad
+
+	json.Unmarshal(data, &load)
+
+	self.ID = load.ID
+	self.Load_date = utils.Parse_date(load.Load_date)
+	self.Loads = load.Loads
+	self.Load_ton = load.Load_ton
+
+	return nil
+}
+
+func (self PostLoad) MarshalJSON() ([]byte, error) {
+	load := postLoad{
+		Loads:     self.Loads,
+		Load_ton:  self.Load_ton,
+		Load_date: utils.Date_string(&self.Load_date),
+	}
+
+	return json.Marshal(load)
 }

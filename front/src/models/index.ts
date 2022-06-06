@@ -30,11 +30,17 @@ export type GetLoad = {
     loads: number,
     load_ton: number,
     business_number: string,
-    lading_bill_number: string,
+    lading_bill_number: number,
 }
 
 export type PutLoad = {
     id: number,
+    load_date: string,
+    loads: number,
+    load_ton: number,
+}
+
+export type PostLoad = {
     load_date: string,
     loads: number,
     load_ton: number,

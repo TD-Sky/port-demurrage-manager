@@ -20,3 +20,8 @@ export const getCssVariableValue = (cssVariableName: string) => {
   }
   return cssVariableValue
 }
+
+// 断言未来的日期
+export function isnt_future(time: Date): boolean {
+    return time.getTime() <= Date.now()
+}

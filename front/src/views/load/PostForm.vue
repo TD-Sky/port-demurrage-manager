@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { reactive, toRefs } from 'vue';
-import { PutStorage } from '@/models/index';
-import type { FormInstance, FormRules } from 'element-plus';
+import { PostLoad } from '@/models/index';
 import { isnt_future } from '@/utils/index';
+import type { FormInstance, FormRules } from 'element-plus';
 
 // 共享状态
 const props = defineProps(["opening", "buffer"]);
 const { opening, buffer } = toRefs(props);
 
 // 将触发的父组件函数
-const emits = defineEmits(["close_form", "put_then_refresh"]);
+const emits = defineEmits(["close_form", "post_then_refresh"]);
 
 const label_width = '70px';
 const rule_form = reactive(<FormInstance>{});
 const rules = reactive<FormRules>({
-    store_date: [
+    load_date: [
         {
             type: "date",
             required: true,
@@ -23,16 +23,7 @@ const rules = reactive<FormRules>({
         }
     ],
 
-    license_plate_number: [
-        {
-            type: "string",
-            required: true,
-            message: "车牌号",
-            trigger: "change",
-        }
-    ],
-
-    stocks: [
+    loads: [
         {
             type: "number",
             required: true,
@@ -41,7 +32,7 @@ const rules = reactive<FormRules>({
         }
     ],
 
-    store_ton: [
+    load_ton: [
         {
             type: "float",
             required: true,
@@ -54,35 +45,31 @@ const rules = reactive<FormRules>({
 
 // 只能子组件执行，父组件收不到参数。
 // 传入的是响应类型内部值
-async function submit_form(form_elt: FormInstance | undefined, buf: PutStorage) {
+async function submit_form(form_elt: FormInstance | undefined, buf: PostLoad) {
     if (!form_elt) return
     await form_elt.validate((valid, _) => {
         if (valid) {
-            emits("close_form", 'put')
-            emits("put_then_refresh", buf)
+            emits("close_form", "post")
+            emits("post_then_refresh", buf)
         }
     })
 }
 </script>
 
 <template>
-    <el-dialog v-model="opening['put']" title="入库单" @close="emits('close_form', 'put')">
+    <el-dialog v-model="opening['post']" title="出库单" @close="emits('close_form', 'post')">
         <el-form :rules="rules" ref="rule_form" :model="buffer">
 
-            <el-form-item prop="store_date" label="日期" :label-width="label_width">
-                <el-date-picker type="date" v-model="buffer.store_date" :disabled-date="isnt_future" />
+            <el-form-item prop="load_date" label="日期" :label-width="label_width">
+                <el-date-picker type="date" v-model="buffer.load_date" :disabled-date="isnt_future" />
             </el-form-item>
 
-            <el-form-item prop="license_plate_number" label="车牌号" :label-width="label_width">
-                <el-input v-model="buffer.license_plate_number" maxlength="7" style="width: 200px" />
+            <el-form-item prop="loads" label="件数" :label-width="label_width">
+                <el-input-number :min="1" :controls="false" v-model.number="buffer.loads" />
             </el-form-item>
 
-            <el-form-item prop="stocks" label="件数" :label-width="label_width">
-                <el-input-number :min="1" :controls="false" v-model.number="buffer.stocks" />
-            </el-form-item>
-
-            <el-form-item prop="store_ton" label="吨数" :label-width="label_width">
-                <el-input-number :min="1.00" :controls="false" :precision="2" v-model="buffer.store_ton" />
+            <el-form-item prop="load_ton" label="吨数" :label-width="label_width">
+                <el-input-number :min="1.00" :controls="false" :precision="2" v-model="buffer.load_ton" />
             </el-form-item>
 
         </el-form>
@@ -101,4 +88,3 @@ async function submit_form(form_elt: FormInstance | undefined, buf: PutStorage) 
     margin-right: 10px;
 }
 </style>
-

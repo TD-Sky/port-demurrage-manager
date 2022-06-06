@@ -2,6 +2,7 @@
 import { reactive, toRefs } from 'vue';
 import { PostStorage } from '@/models/index';
 import type { FormInstance, FormRules } from 'element-plus';
+import { isnt_future } from '@/utils/index';
 
 // 共享状态
 const props = defineProps(["opening", "buffer"]);
@@ -62,11 +63,6 @@ async function submit_form(form_elt: FormInstance | undefined, buf: PostStorage)
         }
     })
 }
-
-// 只能预订未来的日期
-function non_future(time: Date): boolean {
-    return time.getTime() <= Date.now()
-}
 </script>
 
 <template>
@@ -74,7 +70,7 @@ function non_future(time: Date): boolean {
         <el-form :rules="rules" ref="rule_form" :model="buffer">
 
             <el-form-item prop="store_date" label="日期" :label-width="label_width">
-                <el-date-picker type="date" v-model="buffer.store_date" :disabled-date="non_future" />
+                <el-date-picker type="date" v-model="buffer.store_date" :disabled-date="isnt_future" />
             </el-form-item>
 
             <el-form-item prop="license_plate_number" label="车牌号" :label-width="label_width">
