@@ -15,10 +15,6 @@ func Get_loads(ctx *gin.Context) {
 
 	dba.Select_loads(db.(*sqlx.DB), &loads)
 
-	for i := 0; i < len(loads); i++ {
-		retain_YMD(&loads[i].Load_date)
-	}
-
 	body := auth.Make_Body(20000)
 	body.Set_data("loads", loads)
 
@@ -32,6 +28,19 @@ func Put_load(ctx *gin.Context) {
 	ctx.ShouldBind(&load)
 
 	dba.Update_load(db.(*sqlx.DB), load)
+
+	body := auth.Make_Body(20000)
+
+	ctx.JSON(http.StatusOK, body.To_json())
+}
+
+func Post_load(ctx *gin.Context) {
+	db, _ := ctx.Get("db")
+	var load models.PostLoad
+
+	ctx.ShouldBind(&load)
+
+	dba.Insert_load(db.(*sqlx.DB), load)
 
 	body := auth.Make_Body(20000)
 

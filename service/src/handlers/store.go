@@ -28,10 +28,6 @@ func Get_store(ctx *gin.Context) {
 
 	dba.Select_stores(db.(*sqlx.DB), &stores)
 
-	for i := 0; i < len(stores); i++ {
-		retain_YMD(&stores[i].Store_date)
-	}
-
 	body := auth.Make_Body(20000)
 	body.Set_data("stores", stores)
 
