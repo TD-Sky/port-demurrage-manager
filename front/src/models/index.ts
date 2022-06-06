@@ -16,6 +16,13 @@ export type PutStorage = {
     store_ton: number,
 }
 
+export type PostStorage = {
+    store_date: string,
+    license_plate_number: string,
+    stocks: number,
+    store_ton: number,
+}
+
 export type GetLoad = {
     id: number,
     order_number: string,

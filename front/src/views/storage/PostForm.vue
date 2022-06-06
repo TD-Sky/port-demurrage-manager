@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { reactive, toRefs } from 'vue';
-import { PutStorage } from '@/models/index';
+import { PostStorage } from '@/models/index';
 import type { FormInstance, FormRules } from 'element-plus';
 
 // 共享状态
-const props = defineProps(["display_form", "buffer"]);
-const { display_form, buffer } = toRefs(props);
+const props = defineProps(["opening", "buffer"]);
+const { opening, buffer } = toRefs(props);
 
 // 将触发的父组件函数
-const emits = defineEmits(["close_form", "upload_and_refresh"]);
+const emits = defineEmits(["close_form", "post_then_refresh"]);
 
 const label_width = '70px';
 const rule_form = reactive(<FormInstance>{});
@@ -53,12 +53,12 @@ const rules = reactive<FormRules>({
 
 // 只能子组件执行，父组件收不到参数。
 // 传入的是响应类型内部值
-async function submit_form(form_elt: FormInstance | undefined, buf: PutStorage) {
+async function submit_form(form_elt: FormInstance | undefined, buf: PostStorage) {
     if (!form_elt) return
     await form_elt.validate((valid, _) => {
         if (valid) {
-            emits("close_form")
-            emits("upload_and_refresh", buf)
+            emits("close_form", 'post')
+            emits("post_then_refresh", buf)
         }
     })
 }
@@ -70,7 +70,7 @@ function non_future(time: Date): boolean {
 </script>
 
 <template>
-    <el-dialog v-model="display_form" title="入库单" @close="emits('close_form')">
+    <el-dialog v-model="opening['post']" title="入库单" @close="emits('close_form', 'post')">
         <el-form :rules="rules" ref="rule_form" :model="buffer">
 
             <el-form-item prop="store_date" label="日期" :label-width="label_width">
@@ -105,4 +105,3 @@ function non_future(time: Date): boolean {
     margin-right: 10px;
 }
 </style>
-

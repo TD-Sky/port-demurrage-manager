@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import { GetStorage, PutStorage } from '@/models/index';
-import { Edit } from '@element-plus/icons-vue';
+import { GetStorage, PutStorage, PostStorage } from '@/models/index';
+import { Edit, Plus } from '@element-plus/icons-vue';
 import { request } from '@/utils/service';
 import { onBeforeMount, ref, reactive } from "vue";
-import StoreForm from './StoreForm.vue';
+import PutForm from './PutForm.vue';
+import PostForm from './PostForm.vue';
 
-const storages = ref<GetStorage[]>([])         // 库存信息数组
-const buffer = reactive(<PutStorage>{});    // 表单填写缓冲区
-const display_form = ref(false);            // 是否打开表单
+const storages = ref<GetStorage[]>([])                    // 库存信息数组
+const buffer = reactive(<PostStorage | PutStorage>{});    // 表单填写缓冲区
+const opening = reactive<{ [key: string]: boolean }>({
+    "post": false,
+    "put": false,
+});
 
 const get_stores = () => {
     request({
@@ -15,6 +19,14 @@ const get_stores = () => {
         method: "get",
     }).then((resp) => {
         storages.value = resp.data.stores
+    })
+}
+
+function post_store(data: PostStorage) {
+    return request({
+        url: "/store",
+        method: "post",
+        data,
     })
 }
 
@@ -26,17 +38,33 @@ function put_store(data: PutStorage) {
     })
 }
 
-const open_form = (storage: GetStorage) => {
+const modify_form = (storage: GetStorage) => {
     Object.assign(buffer, storage);
-    display_form.value = true
+    opening["put"] = true;
 }
 
-const close_form = () => {
-    display_form.value = false
+const new_form = () => {
+    Object.assign(buffer, {
+        store_date: "",
+        license_plate_number: "",
+        stocks: null,
+        store_ton: null,
+    });
+    opening["post"] = true;
 }
 
-function upload_and_refresh(data: PutStorage) {
+const close_form = (kind: string) => {
+    opening[kind] = false
+}
+
+function put_then_refresh(data: PutStorage) {
     put_store(data).then((_) => {
+        get_stores()
+    })
+}
+
+function post_then_refresh(data: PostStorage) {
+    post_store(data).then((_) => {
         get_stores()
     })
 }
@@ -47,13 +75,33 @@ onBeforeMount(get_stores)
 <template>
     <div class="app-container">
         <el-row :gutter="50">
+
+            <el-col :span="50">
+                <el-card class="box-card" shadow="hover">
+                    <template #header>
+                        <div class="card-header">
+                            <span style="font-size:20px">预约入库</span>
+                            <el-button size="large" :icon="Plus" @click="new_form()" />
+                        </div>
+                    </template>
+
+                    <ul>
+                        <li class="text item"> 入库日期 </li>
+                        <li class="text item"> 车牌号 </li>
+                        <li class="text item"> 件数 </li>
+                        <li class="text item"> 吨数 </li>
+                    </ul>
+
+                </el-card>
+            </el-col>
+
             <el-col :span="50" v-for="storage in storages">
 
-                <el-card class="box-card">
+                <el-card class="box-card" shadow="never">
                     <template #header>
                         <div class="card-header">
                             <span>ID：{{ storage.id }}</span>
-                            <el-button size="small" @click="open_form(storage)" :icon="Edit" />
+                            <el-button size="large" @click="modify_form(storage)" :icon="Edit" />
                         </div>
                     </template>
 
@@ -89,8 +137,10 @@ onBeforeMount(get_stores)
             </el-col>
         </el-row>
 
-        <StoreForm :display_form="display_form" :buffer="buffer" @close_form="close_form"
-            @upload_and_refresh="upload_and_refresh" />
+        <PutForm :opening="opening" :buffer="buffer" @close_form="close_form" @put_then_refresh="put_then_refresh" />
+
+        <PostForm :opening="opening" :buffer="buffer" @close_form="close_form" @post_then_refresh="post_then_refresh" />
+
     </div>
 </template>
 
@@ -114,11 +164,11 @@ onBeforeMount(get_stores)
 }
 
 .text {
-    font-size: 14px;
+    font-size: 18px;
 }
 
 .item {
-    margin-bottom: 18px;
+    margin-bottom: 30px;
 }
 
 .box-card {
