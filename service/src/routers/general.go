@@ -17,7 +17,7 @@ func General(server *gin.Engine) {
 	// 出库信息的路由
 	server.GET("/load", authm, handlers.Get_loads)
 	server.PUT("/load", authm, handlers.Put_load)
-	server.POST("/load", authm, handlers.Post_load)
+	server.POST("/load", authm, handlers.Post_loads)
 
 	// 特权路由
 	users_grp := server.Group("/users")

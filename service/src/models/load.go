@@ -27,9 +27,15 @@ type PutLoad struct {
 }
 
 type PostLoad struct {
-	Load_date time.Time `db:"load_date"`
-	Loads     int32     `db:"loads"`
-	Load_ton  float64   `db:"load_ton"`
+	Order_number int32     `db:"order_number"`
+	Load_date    time.Time `db:"load_date"`
+	Loads        int32     `db:"loads"`
+	Load_ton     float64   `db:"load_ton"`
+}
+
+// 用于 gin 的参数绑定
+type PostLoads struct {
+	Loads []PostLoad `json:"loads"`
 }
 
 /* 序列化与反序列化的过渡结构体 */
@@ -71,7 +77,7 @@ func (self GetLoad) MarshalJSON() ([]byte, error) {
 	return json.Marshal(load)
 }
 
-func (self *GetLoad) UnmarshalJSON(data []byte) error {
+/* func (self *GetLoad) UnmarshalJSON(data []byte) error {
 	var load getLoad
 
 	json.Unmarshal(data, &load)
@@ -85,9 +91,9 @@ func (self *GetLoad) UnmarshalJSON(data []byte) error {
 	self.Lading_bill_number = load.Lading_bill_number
 
 	return nil
-}
+} */
 
-func (self PutLoad) MarshalJSON() ([]byte, error) {
+/* func (self PutLoad) MarshalJSON() ([]byte, error) {
 	load := putLoad{
 		ID:        self.ID,
 		Loads:     self.Loads,
@@ -96,7 +102,7 @@ func (self PutLoad) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(load)
-}
+} */
 
 func (self *PutLoad) UnmarshalJSON(data []byte) error {
 	var load putLoad
@@ -111,7 +117,7 @@ func (self *PutLoad) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (self PostLoad) MarshalJSON() ([]byte, error) {
+/* func (self PostLoad) MarshalJSON() ([]byte, error) {
 	load := postLoad{
 		Loads:     self.Loads,
 		Load_ton:  self.Load_ton,
@@ -119,4 +125,17 @@ func (self PostLoad) MarshalJSON() ([]byte, error) {
 	}
 
 	return json.Marshal(load)
+} */
+
+func (self *PostLoad) UnmarshalJSON(data []byte) error {
+	var load postLoad
+
+	json.Unmarshal(data, &load)
+
+	self.Order_number = 0
+	self.Load_date = utils.Parse_date(load.Load_date)
+	self.Loads = load.Loads
+	self.Load_ton = load.Load_ton
+
+	return nil
 }

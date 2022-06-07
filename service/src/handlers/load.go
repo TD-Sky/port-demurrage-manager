@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/bwmarrin/snowflake"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 	"net/http"
@@ -8,6 +9,8 @@ import (
 	"service/dba"
 	"service/models"
 )
+
+var sf_node, _ = snowflake.NewNode(114)
 
 func Get_loads(ctx *gin.Context) {
 	db, _ := ctx.Get("db")
@@ -34,13 +37,13 @@ func Put_load(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, body.To_json())
 }
 
-func Post_load(ctx *gin.Context) {
+func Post_loads(ctx *gin.Context) {
 	db, _ := ctx.Get("db")
-	var load models.PostLoad
+	var post_loads models.PostLoads
 
-	ctx.ShouldBind(&load)
+	ctx.ShouldBind(&post_loads)
 
-	dba.Insert_load(db.(*sqlx.DB), load)
+	dba.Insert_loads(db.(*sqlx.DB), post_loads.Loads, sf_node.Generate())
 
 	body := auth.Make_Body(20000)
 
