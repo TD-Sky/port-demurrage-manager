@@ -21,7 +21,7 @@ func Get_loads(ctx *gin.Context) {
 	body := auth.Make_Body(20000)
 	body.Set_data("loads", loads)
 
-	ctx.JSON(http.StatusOK, body.To_json())
+	ctx.JSON(http.StatusOK, body)
 }
 
 func Put_load(ctx *gin.Context) {
@@ -34,18 +34,20 @@ func Put_load(ctx *gin.Context) {
 
 	body := auth.Make_Body(20000)
 
-	ctx.JSON(http.StatusOK, body.To_json())
+	ctx.JSON(http.StatusOK, body)
 }
 
 func Post_loads(ctx *gin.Context) {
 	db, _ := ctx.Get("db")
-	var post_loads models.PostLoads
+	data := gin.H{
+		"loads": []models.PostLoad{},
+	}
 
-	ctx.ShouldBind(&post_loads)
+	ctx.ShouldBind(&data)
 
-	dba.Insert_loads(db.(*sqlx.DB), post_loads.Loads, sf_node.Generate())
+	dba.Insert_loads(db.(*sqlx.DB), data["loads"].([]models.PostLoad), sf_node.Generate())
 
 	body := auth.Make_Body(20000)
 
-	ctx.JSON(http.StatusOK, body.To_json())
+	ctx.JSON(http.StatusOK, body)
 }

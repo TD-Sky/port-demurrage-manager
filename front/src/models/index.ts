@@ -8,16 +8,16 @@ export type GetStorage = {
     fee: number,
 }
 
-export type PutStorage = {
-    id: number,
-    store_date: string,
+export type PostStorage = {
+    store_date: Date,
     license_plate_number: string,
     stocks: number,
     store_ton: number,
 }
 
-export type PostStorage = {
-    store_date: string,
+export type PutStorage = {
+    id: number,
+    store_date: Date,
     license_plate_number: string,
     stocks: number,
     store_ton: number,
@@ -33,15 +33,15 @@ export type GetLoad = {
     lading_bill_number: number,
 }
 
-export type PutLoad = {
-    id: number,
-    load_date: string,
+export type PostLoad = {
+    load_date: Date,
     loads: number,
     load_ton: number,
 }
 
-export type PostLoad = {
-    load_date: string,
+export type PutLoad = {
+    id: number,
+    load_date: Date,
     loads: number,
     load_ton: number,
 }

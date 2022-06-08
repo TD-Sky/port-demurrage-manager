@@ -20,7 +20,7 @@ func Login(ctx *gin.Context) {
 		body = auth.Make_Body(1145)
 	}
 
-	ctx.JSON(http.StatusOK, body.To_json())
+	ctx.JSON(http.StatusOK, body)
 }
 
 func Info(ctx *gin.Context) {
@@ -35,5 +35,5 @@ func Info(ctx *gin.Context) {
 
 	body.Set_data("user", user_info)
 
-	ctx.JSON(http.StatusOK, body.To_json())
+	ctx.JSON(http.StatusOK, body)
 }

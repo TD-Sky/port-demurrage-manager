@@ -8,14 +8,9 @@ import (
 
 var cn, _ = time.LoadLocation("Asia/Shanghai")
 
-// 将时间转为中国时区的日期字符串
-func Date_string(t *time.Time) string {
-	return t.In(cn).Format("2006-01-02")
-}
-
-func Parse_date(s string) time.Time {
-	t, _ := time.ParseInLocation("2006-01-02", s, cn)
-	return t
+// 转换到中国时区
+func CST(t *time.Time) time.Time {
+	return t.In(cn)
 }
 
 func Parse_order_number(s string) int32 {

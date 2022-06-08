@@ -21,13 +21,13 @@ func Authenticate() gin.HandlerFunc {
 
 		if token_string == "" {
 			body = auth.Make_Body(1145)
-			ctx.JSON(http.StatusOK, body.To_json())
+			ctx.JSON(http.StatusOK, body)
 			ctx.Abort()
 		}
 
 		if user_pl, err := auth.Parse(token_string); err != nil {
 			body = auth.Make_Body(1145)
-			ctx.JSON(http.StatusOK, body.To_json())
+			ctx.JSON(http.StatusOK, body)
 			ctx.Abort()
 		} else {
 			ctx.Set("username", user_pl.Name)

@@ -1,10 +1,14 @@
 package auth
 
-import "github.com/gin-gonic/gin"
+import (
+	"encoding/json"
+
+	"github.com/gin-gonic/gin"
+)
 
 type Body struct {
-	code uint16
-	data gin.H
+	Code uint16
+	Data gin.H
 }
 
 func Make_Body(code uint16) Body {
@@ -15,17 +19,17 @@ func Make_Body(code uint16) Body {
 }
 
 func (self *Body) Set_data(k string, v interface{}) {
-	self.data[k] = v
+	self.Data[k] = v
 }
 
-func (self *Body) To_json() gin.H {
-	res := gin.H{
-		"code": self.code,
-	}
+func (self Body) MarshalJSON() ([]byte, error) {
+    body := gin.H {
+        "code": self.Code,
+    }
 
-	if len(self.data) > 0 {
-		res["data"] = self.data
-	}
+    if len(self.Data) > 0 {
+        body["data"] = self.Data
+    }
 
-	return res
+    return json.Marshal(body)
 }

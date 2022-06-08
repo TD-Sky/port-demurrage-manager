@@ -19,7 +19,7 @@ func Post_store(ctx *gin.Context) {
 
 	body := auth.Make_Body(20000)
 
-	ctx.JSON(http.StatusOK, body.To_json())
+	ctx.JSON(http.StatusOK, body)
 }
 
 func Get_store(ctx *gin.Context) {
@@ -31,7 +31,7 @@ func Get_store(ctx *gin.Context) {
 	body := auth.Make_Body(20000)
 	body.Set_data("stores", stores)
 
-	ctx.JSON(http.StatusOK, body.To_json())
+	ctx.JSON(http.StatusOK, body)
 }
 
 func Put_store(ctx *gin.Context) {
@@ -44,5 +44,5 @@ func Put_store(ctx *gin.Context) {
 
 	body := auth.Make_Body(20000)
 
-	ctx.JSON(http.StatusOK, body.To_json())
+	ctx.JSON(http.StatusOK, body)
 }
