@@ -7,6 +7,7 @@ import (
 	"service/auth"
 	"service/dba"
 	"service/models"
+	"strconv"
 )
 
 func Post_store(ctx *gin.Context) {
@@ -41,6 +42,18 @@ func Put_store(ctx *gin.Context) {
 	ctx.ShouldBind(&store)
 
 	dba.Update_store(db.(*sqlx.DB), store)
+
+	body := auth.Make_Body(20000)
+
+	ctx.JSON(http.StatusOK, body)
+}
+
+func Delete_store(ctx *gin.Context) {
+	db, _ := ctx.Get("db")
+
+	id, _ := strconv.Atoi(ctx.Param("id"))
+
+	dba.Delete_store(db.(*sqlx.DB), int32(id))
 
 	body := auth.Make_Body(20000)
 

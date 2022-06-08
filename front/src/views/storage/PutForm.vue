@@ -43,7 +43,7 @@ const rules = reactive<FormRules>({
 
     store_ton: [
         {
-            type: "float",
+            type: "number",
             required: true,
             message: "输入正实数，小数点后有两位",
             trigger: "change",
@@ -89,7 +89,9 @@ async function submit_form(form_elt: FormInstance | undefined, buf: PutStorage) 
 
         <template #footer>
             <span class="dialog-footer">
-                <el-button type="primary" @click="submit_form(rule_form, buffer)">提交</el-button>
+                <el-button type="primary" @click="submit_form(rule_form, buffer)">
+                    提交
+                </el-button>
             </span>
         </template>
     </el-dialog>
@@ -101,4 +103,3 @@ async function submit_form(form_elt: FormInstance | undefined, buf: PutStorage) 
     margin-right: 10px;
 }
 </style>
-

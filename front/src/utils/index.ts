@@ -25,3 +25,8 @@ export const getCssVariableValue = (cssVariableName: string) => {
 export function isnt_future(time: Date): boolean {
     return time.getTime() <= Date.now()
 }
+
+// 断言开始计费
+export function fees_incurred(duration: number) {
+    return duration > 0
+}

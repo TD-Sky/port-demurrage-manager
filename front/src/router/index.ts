@@ -60,7 +60,15 @@ export const constantRoutes: Array<RouteRecordRaw> = [
                     icon: "dashboard",
                     affix: true
                 }
-            }
+            },
+
+            {
+                path: "post",
+                component: () => import("@/views/load/PostForm.vue"),
+                meta: {
+                    hidden: true,
+                },
+            },
         ]
     },
 

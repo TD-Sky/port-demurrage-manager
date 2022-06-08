@@ -40,3 +40,23 @@ func Insert_loads(db *sqlx.DB, loads []models.PostLoad, sfid snowflake.ID) {
             values (:order_number, :load_date, :loads, :load_ton)`,
 		loads)
 }
+
+func Delete_load(db *sqlx.DB, id int32) {
+	var order_number int32
+	var count int64
+
+	db.QueryRow(
+		`delete from load where id = $1
+            returning order_number`,
+		id).Scan(&order_number)
+
+	db.QueryRow(
+		`select count(*) from load
+            where order_number = $1`,
+		order_number).Scan(&count)
+
+	if count == 0 {
+		db.Exec(`delete from shipping_order where num = $1`,
+			order_number)
+	}
+}

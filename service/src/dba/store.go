@@ -25,3 +25,7 @@ func Update_store(db *sqlx.DB, store models.PutStore) {
             where id = :id`,
 		store)
 }
+
+func Delete_store(db *sqlx.DB, id int32) {
+	db.Exec(`delete from store where id = $1`, id)
+}

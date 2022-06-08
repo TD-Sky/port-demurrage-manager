@@ -5,8 +5,10 @@ import type { FormInstance, FormRules } from 'element-plus';
 import { isnt_future } from '@/utils/index';
 
 // 共享状态
-const props = defineProps(["opening", "buffer"]);
-const { opening, buffer } = toRefs(props);
+const props = defineProps(["opening"]);
+const { opening } = toRefs(props);
+
+const buffer = reactive(<PostStorage>{});
 
 // 将触发的父组件函数
 const emits = defineEmits(["close_form", "post_then_refresh"]);
@@ -43,7 +45,7 @@ const rules = reactive<FormRules>({
 
     store_ton: [
         {
-            type: "float",
+            type: "number",
             required: true,
             message: "输入正实数，小数点后有两位",
             trigger: "change",

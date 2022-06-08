@@ -8,7 +8,12 @@ import (
 	"service/auth"
 	"service/dba"
 	"service/models"
+	"strconv"
 )
+
+type postLoads struct {
+	Inner []models.PostLoad `json:"loads"`
+}
 
 var sf_node, _ = snowflake.NewNode(114)
 
@@ -39,13 +44,23 @@ func Put_load(ctx *gin.Context) {
 
 func Post_loads(ctx *gin.Context) {
 	db, _ := ctx.Get("db")
-	data := gin.H{
-		"loads": []models.PostLoad{},
-	}
+	var loads postLoads
 
-	ctx.ShouldBind(&data)
+	ctx.ShouldBind(&loads)
 
-	dba.Insert_loads(db.(*sqlx.DB), data["loads"].([]models.PostLoad), sf_node.Generate())
+	dba.Insert_loads(db.(*sqlx.DB), loads.Inner, sf_node.Generate())
+
+	body := auth.Make_Body(20000)
+
+	ctx.JSON(http.StatusOK, body)
+}
+
+func Delete_load(ctx *gin.Context) {
+	db, _ := ctx.Get("db")
+
+	id, _ := strconv.Atoi(ctx.Param("id"))
+
+	dba.Delete_load(db.(*sqlx.DB), int32(id))
 
 	body := auth.Make_Body(20000)
 
