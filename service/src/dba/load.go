@@ -42,21 +42,10 @@ func Insert_loads(db *sqlx.DB, loads []models.PostLoad, sfid snowflake.ID) {
 }
 
 func Delete_load(db *sqlx.DB, id int32) {
-	var order_number int32
-	var count int64
-
-	db.QueryRow(
+	db.Exec(
 		`delete from load where id = $1
             returning order_number`,
-		id).Scan(&order_number)
+		id)
 
-	db.QueryRow(
-		`select count(*) from load
-            where order_number = $1`,
-		order_number).Scan(&count)
-
-	if count == 0 {
-		db.Exec(`delete from shipping_order where num = $1`,
-			order_number)
-	}
+    // 然后触发器 trigger_clean_shipping_order 会清理空出货订单
 }
