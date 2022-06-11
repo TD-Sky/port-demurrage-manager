@@ -10,5 +10,3 @@ create table store
     duration int default 0 not NULL,            -- 存放天数，每日0点更新
     fee float8 default 0 not NULL               -- 这批货物产生的费用
 );
-
-create index store_date_index on store (store_date);

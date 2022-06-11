@@ -11,5 +11,3 @@ create table load
     constraint order_number_fk foreign key (order_number)
         references shipping_order(num)
 );
-
-create index load_date_index on load (load_date);
