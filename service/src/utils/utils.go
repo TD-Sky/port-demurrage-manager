@@ -6,11 +6,11 @@ import (
 	"time"
 )
 
-var cn, _ = time.LoadLocation("Asia/Shanghai")
+var CN, _ = time.LoadLocation("Asia/Shanghai")
 
 // 转换到中国时区
 func CST(t *time.Time) time.Time {
-	return t.In(cn)
+	return t.In(CN)
 }
 
 func Parse_order_number(s string) int32 {
