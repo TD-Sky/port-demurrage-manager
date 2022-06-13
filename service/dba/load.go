@@ -6,13 +6,19 @@ import (
 	"service/models"
 )
 
-func Select_loads(db *sqlx.DB, loads *[]models.GetLoad) {
-	db.Select(loads,
+func Select_loads(db *sqlx.DB) []models.GetLoad {
+	var loads []models.GetLoad
+
+	db.Select(&loads,
 		`select id, order_number, load_date, loads, load_ton, business_number, lading_bill_number
             from shipping_order
             left join load
             on num = order_number
-            order by load_date ASC`)
+            order by
+            load_date ASC,
+            loads DESC`)
+
+	return loads
 }
 
 func Update_load(db *sqlx.DB, load models.PutLoad) {
@@ -47,5 +53,5 @@ func Delete_load(db *sqlx.DB, id int32) {
             returning order_number`,
 		id)
 
-    // 然后触发器 trigger_clean_shipping_order 会清理空出货订单
+	// 然后触发器 trigger_clean_shipping_order 会清理空出货订单
 }
