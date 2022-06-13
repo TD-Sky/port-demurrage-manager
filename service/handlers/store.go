@@ -25,9 +25,8 @@ func Post_store(ctx *gin.Context) {
 
 func Get_store(ctx *gin.Context) {
 	db, _ := ctx.Get("db")
-	var stores []models.GetStore
 
-	dba.Select_stores(db.(*sqlx.DB), &stores)
+	stores := dba.Select_stores(db.(*sqlx.DB))
 
 	body := auth.Make_Body(20000)
 	body.Set_data("stores", stores)
