@@ -8,28 +8,42 @@ import (
 
 type Body struct {
 	Code uint16
+	Msg  string
 	Data gin.H
 }
 
 func Make_Body(code uint16) Body {
 	return Body{
-		code,
-		gin.H{},
+		Code: code,
+		Msg:  "",
+		Data: gin.H{},
 	}
 }
 
-func (self *Body) Set_data(k string, v interface{}) {
+func (self *Body) Set_message(msg string) *Body {
+	self.Msg = msg
+
+	return self
+}
+
+func (self *Body) Set_data(k string, v interface{}) *Body {
 	self.Data[k] = v
+
+	return self
 }
 
 func (self Body) MarshalJSON() ([]byte, error) {
-    body := gin.H {
-        "code": self.Code,
-    }
+	body := gin.H{
+		"code": self.Code,
+	}
 
-    if len(self.Data) > 0 {
-        body["data"] = self.Data
-    }
+	if self.Msg != "" {
+		body["msg"] = self.Msg
+	}
 
-    return json.Marshal(body)
+	if len(self.Data) > 0 {
+		body["data"] = self.Data
+	}
+
+	return json.Marshal(body)
 }
