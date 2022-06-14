@@ -31,6 +31,7 @@ export type GetLoad = {
     load_ton: number,
     business_number: string,
     lading_bill_number: number,
+    fee: number,
 }
 
 export type PostLoad = {

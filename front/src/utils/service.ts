@@ -33,6 +33,9 @@ function createService() {
           case 20000:
             // code === 20000 代表没有错误
             return apiData
+          case 19198:
+            ElMessage.error(`库存不够啦，可能断货于${apiData.msg}之前`)
+            return apiData
           default:
             // 不是正确的 code
             ElMessage.error(apiData.msg || "Error")

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, onBeforeMount, ref } from 'vue';
+import { reactive, onBeforeMount, ref, computed } from 'vue';
 import { get_loads, put_load, delete_load } from './request';
 import { Edit, Plus, Delete } from '@element-plus/icons-vue';
 import { GetLoad, PutLoad } from '@/models/index';
@@ -57,6 +57,17 @@ function delete_then_refresh(id: number) {
     })
 }
 
+const total_fee = computed(() => {
+    // 迭代器写法会卡刷新
+    let sum = 0
+
+    for (const item of loads.value) {
+        sum += item.fee
+    }
+
+    return sum;
+});
+
 // 进入网页，先读一次数据库
 onBeforeMount(() => { get_loads(loads) })
 </script>
@@ -64,20 +75,32 @@ onBeforeMount(() => { get_loads(loads) })
 <template>
     <Component>
         <div class="app-container">
-            <el-table :data="loads" border :fit="false">
-                <el-table-column header-align="center" prop="load_date" label="日期" width="120" />
-                <el-table-column header-align="center" prop="loads" label="件数" width="120" />
-                <el-table-column header-align="center" prop="load_ton" label="吨数" width="120" />
-                <el-table-column header-align="center" prop="business_number" label="业务号" width="150" />
-                <el-table-column header-align="center" prop="lading_bill_number" label="提单号" width="180" />
-                <el-table-column header-align="center" prop="order_number" label="订单号" width="150" />
-                <el-table-column align="center" label="操作" width="180">
-                    <template #default="scope">
-                        <el-button type="primary" @click="modify_form(scope.row)" :icon="Edit" />
-                        <el-button type="danger" @click="remove_item(scope.row.id)" :icon="Delete" />
-                    </template>
-                </el-table-column>
-            </el-table>
+
+            <div class="loads_table">
+                <el-table :data="loads" border :fit="false" max-height="1000">
+                    <el-table-column header-align="center" prop="load_date" label="日期" width="120" />
+                    <el-table-column header-align="center" prop="loads" label="件数" width="120" />
+                    <el-table-column header-align="center" prop="load_ton" label="吨数" width="120" />
+                    <el-table-column align="center" prop="business_number" label="业务号" width="150" />
+                    <el-table-column align="center" prop="lading_bill_number" label="提单号" width="180" />
+                    <el-table-column align="center" prop="order_number" label="订单号" width="150" />
+                    <el-table-column header-align="center" prop="fee" label="堆存费" width="120" />
+                    <el-table-column align="center" label="操作" width="180">
+                        <template #default="scope">
+                            <el-button type="primary" @click="modify_form(scope.row)" :icon="Edit" />
+                            <el-button type="danger" @click="remove_item(scope.row.id)" :icon="Delete" />
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+
+            <div class="total_fee">
+                <el-descriptions border>
+                    <el-descriptions-item label="预付堆存费" width="840px">
+                        {{ total_fee }}
+                    </el-descriptions-item>
+                </el-descriptions>
+            </div>
         </div>
 
         <div class="handle-button" @click="new_form">
@@ -112,5 +135,13 @@ onBeforeMount(() => { get_loads(loads) })
     align-items: center;
     justify-content: center;
     top: 300px;
+}
+
+.loads_table {
+    width: 85.4%;
+}
+
+.total_fee {
+    width: 85.3%;
 }
 </style>
