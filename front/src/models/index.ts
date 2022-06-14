@@ -11,7 +11,6 @@ export type PostStorage = {
     store_date: Date,
     license_plate_number: string,
     stocks: number,
-    store_ton: number,
 }
 
 export type PutStorage = {
@@ -19,7 +18,6 @@ export type PutStorage = {
     store_date: Date,
     license_plate_number: string,
     stocks: number,
-    store_ton: number,
 }
 
 export type GetLoad = {
@@ -36,12 +34,10 @@ export type GetLoad = {
 export type PostLoad = {
     load_date: Date,
     loads: number,
-    load_ton: number,
 }
 
 export type PutLoad = {
     id: number,
     load_date: Date,
     loads: number,
-    load_ton: number,
 }

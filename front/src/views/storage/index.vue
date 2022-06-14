@@ -168,7 +168,7 @@ onBeforeMount(() => {
 }
 
 .item {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .box-card {

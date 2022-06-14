@@ -48,7 +48,6 @@ type PostLoad struct {
 type postLoad struct {
 	Load_date time.Time `json:"load_date"` // 日期类型的作用不可替代
 	Loads     int32     `json:"loads"`
-	Load_ton  float64   `json:"load_ton"`
 }
 
 func (self *PostLoad) UnmarshalJSON(data []byte) error {
@@ -59,7 +58,7 @@ func (self *PostLoad) UnmarshalJSON(data []byte) error {
 	self.Order_number = 0
 	self.Load_date = load.Load_date.In(utils.CN)
 	self.Loads = load.Loads
-	self.Load_ton = load.Load_ton
+	self.Load_ton = 0.05 * float64(load.Loads)
 
 	return nil
 }
@@ -77,7 +76,6 @@ type putLoad struct {
 	ID        int32     `json:"id"`
 	Load_date time.Time `json:"load_date"` // 日期类型的作用不可替代
 	Loads     int32     `json:"loads"`
-	Load_ton  float64   `json:"load_ton"`
 }
 
 func (self *PutLoad) UnmarshalJSON(data []byte) error {
@@ -88,7 +86,7 @@ func (self *PutLoad) UnmarshalJSON(data []byte) error {
 	self.ID = load.ID
 	self.Load_date = load.Load_date.In(utils.CN)
 	self.Loads = load.Loads
-	self.Load_ton = load.Load_ton
+	self.Load_ton = 0.05 * float64(load.Loads)
 
 	return nil
 }

@@ -53,16 +53,6 @@ const rules = reactive<FormRules>({
             trigger: "change",
         }
     ],
-
-    load_ton: [
-        {
-            type: "number",
-            required: true,
-            message: "输入正实数，小数点后有两位",
-            trigger: "change",
-        }
-    ],
-
 })
 
 const remove_load = (elt: PostLoad) => {
@@ -93,14 +83,9 @@ const add_load = () => {
                         <el-input-number :min="1" :controls="false" v-model.number="elt.loads" />
                     </el-form-item>
 
-                    <el-form-item prop="load_ton" label="吨数" label-width="120px">
-                        <el-input-number :min="1.00" :controls="false" :precision="2" v-model="elt.load_ton" />
-                    </el-form-item>
-
                     <el-form-item label-width="120px">
                         <el-button class="delete-button" :icon="Delete" @click.prevent="remove_load(elt)" />
                     </el-form-item>
-
                 </div>
             </el-form>
 

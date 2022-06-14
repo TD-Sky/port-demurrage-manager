@@ -44,7 +44,6 @@ type postStore struct {
 	Store_date           time.Time `json:"store_date"`
 	License_plate_number string    `json:"license_plate_number"`
 	Stocks               int32     `json:"stocks"`
-	Store_ton            float64   `json:"store_ton"`
 }
 
 func (self *PostStore) UnmarshalJSON(data []byte) error {
@@ -54,7 +53,7 @@ func (self *PostStore) UnmarshalJSON(data []byte) error {
 
 	self.Store_date = store.Store_date.In(utils.CN)
 	self.Stocks = store.Stocks
-	self.Store_ton = store.Store_ton
+	self.Store_ton = 0.05 * float64(store.Stocks)
 	self.License_plate_number = store.License_plate_number
 
 	return nil
@@ -75,7 +74,6 @@ type putStore struct {
 	Store_date           time.Time `json:"store_date"`
 	License_plate_number string    `json:"license_plate_number"`
 	Stocks               int32     `json:"stocks"`
-	Store_ton            float64   `json:"store_ton"`
 }
 
 func (self *PutStore) UnmarshalJSON(data []byte) error {
@@ -86,7 +84,7 @@ func (self *PutStore) UnmarshalJSON(data []byte) error {
 	self.ID = store.ID
 	self.Store_date = store.Store_date.In(utils.CN)
 	self.Stocks = store.Stocks
-	self.Store_ton = store.Store_ton
+	self.Store_ton = 0.05 * float64(store.Stocks)
 	self.License_plate_number = store.License_plate_number
 
 	return nil

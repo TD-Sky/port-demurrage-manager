@@ -30,16 +30,6 @@ const rules = reactive<FormRules>({
             trigger: "change",
         }
     ],
-
-    load_ton: [
-        {
-            type: "float",
-            required: true,
-            message: "输入正实数，小数点后有两位",
-            trigger: "change",
-        }
-    ],
-
 })
 
 // 只能子组件执行，父组件收不到参数。
@@ -65,10 +55,6 @@ async function submit_form(form_elt: FormInstance | undefined, buf: PutLoad) {
 
             <el-form-item prop="loads" label="件数" label-width="70px">
                 <el-input-number :min="1" :controls="false" v-model.number="buffer.loads" />
-            </el-form-item>
-
-            <el-form-item prop="load_ton" label="吨数" label-width="70px">
-                <el-input-number :min="1.00" :controls="false" :precision="2" v-model="buffer.load_ton" />
             </el-form-item>
 
         </el-form>
