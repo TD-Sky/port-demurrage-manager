@@ -16,7 +16,6 @@ type GetStore struct {
 	Stocks               int32     `db:"stocks"`
 	Store_ton            float64   `db:"store_ton"`
 	Duration             int32     `db:"duration"`
-	Fee                  int32     `db:"fee"`
 }
 
 func (self GetStore) MarshalJSON() ([]byte, error) {
@@ -27,7 +26,6 @@ func (self GetStore) MarshalJSON() ([]byte, error) {
 		"store_date":           utils.China_date(self.Store_date),
 		"license_plate_number": self.License_plate_number,
 		"duration":             self.Duration,
-		"fee":                  self.Fee,
 	}
 
 	return json.Marshal(store)
@@ -101,5 +99,4 @@ type DayStore struct {
 	Stocks     int32     `db:"stocks"`
 	Store_ton  float64   `db:"store_ton"`
 	Duration   int32     `db:"duration"`
-	Fee        int32     `db:"fee"`
 }

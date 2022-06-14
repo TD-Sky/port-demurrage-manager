@@ -5,7 +5,6 @@ export type GetStorage = {
     stocks: number,
     store_ton: number,
     duration: number,
-    fee: number,
 }
 
 export type PostStorage = {

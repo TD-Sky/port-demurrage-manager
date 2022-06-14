@@ -38,14 +38,13 @@ func Delete_store(db *sqlx.DB, id int32) {
 func Group_stores_by_day(db *sqlx.DB) []models.DayStore {
 	var stores []models.DayStore
 
-	db.Select(stores, `select
-                        store_date,
-                        sum(stocks) as stocks,
-                        sum(store_ton) as store_ton,
-                        duration,
-                        sum(fee) as fee
-                       from store
-                       group by store_date, duration
-                       order by store_date`)
+	db.Select(&stores, `select
+                         store_date,
+                         sum(stocks) as stocks,
+                         sum(store_ton) as store_ton,
+                         duration
+                        from store
+                        group by store_date, duration
+                        order by store_date`)
 	return stores
 }

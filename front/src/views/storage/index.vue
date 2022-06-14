@@ -9,7 +9,7 @@ import PostForm from './PostForm.vue';
 import DelDialog from './DelDialog.vue';
 
 const storages = ref<GetStorage[]>([])                    // 库存信息数组
-const buffer = reactive(<PutStorage>{});    // 表单填写缓冲区
+const buffer = reactive(<PutStorage>{});                  // 表单填写缓冲区
 const opening = reactive<{ [key: string]: boolean }>({
     "post": false,
     "put": false,
@@ -105,7 +105,7 @@ onBeforeMount(() => {
                             </div>
                         </template>
 
-                        <el-descriptions :column="1" border>
+                        <el-descriptions column="1" border>
                             <el-descriptions-item label="入库日期">
                                 {{ storage.store_date }}
                             </el-descriptions-item>
@@ -126,9 +126,6 @@ onBeforeMount(() => {
                                 {{ storage.duration }}
                             </el-descriptions-item>
 
-                            <el-descriptions-item label="堆存费">
-                                {{ storage.fee }}
-                            </el-descriptions-item>
                         </el-descriptions>
 
                     </el-card>

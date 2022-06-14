@@ -4,17 +4,11 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-func Demurrage_updater(db *sqlx.DB) func() {
+func Duration_inc(db *sqlx.DB) func() {
 	return func() {
-		// 先增加库存时间
 		db.Exec(`update store set duration
                     = duration + 1
                     where store_date <= CURRENT_DATE`)
-
-		// 再计费
-		db.Exec(`update store set fee
-                    = fee + 0.5 * store_ton
-                    where duration > 14`)
 	}
 }
 
