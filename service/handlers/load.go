@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/bwmarrin/snowflake"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
@@ -19,11 +20,22 @@ var sf_node, _ = snowflake.NewNode(114)
 
 func Get_loads(ctx *gin.Context) {
 	db, _ := ctx.Get("db")
-	var loads []models.GetLoad
+	var body auth.Body
 
-	dba.Select_loads(db.(*sqlx.DB), &loads)
+	loads := dba.Select_loads(db.(*sqlx.DB))
 
-	body := auth.Make_Body(20000)
+	if fees, err := predict(db.(*sqlx.DB), loads); err != nil {
+		body = auth.Make_Body(19198)
+
+		body.Set_message(fmt.Sprint(err))
+	} else {
+		body = auth.Make_Body(20000)
+
+		for i := 0; i < len(loads); i++ {
+			loads[i].Fee = fees[i]
+		}
+	}
+
 	body.Set_data("loads", loads)
 
 	ctx.JSON(http.StatusOK, body)
