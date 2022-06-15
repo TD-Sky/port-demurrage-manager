@@ -17,10 +17,15 @@ const opening = reactive<{ [key: string]: boolean }>({
 });                                                       // 会话开关
 const remove_id = ref<number>();                          // 删除条目的ID
 
+const flatten_cards = () => {
+    get_stores().then((resp) => {
+        storages.value = resp.data.stores;
+    });
+}
+
 const modify_form = (storage: GetStorage) => {
     buffer.id = storage.id;
     buffer.stocks = storage.stocks;
-    buffer.store_ton = storage.store_ton;
     buffer.license_plate_number = storage.license_plate_number;
     buffer.store_date = new Date(storage.store_date)
 
@@ -42,25 +47,25 @@ const close_form = (kind: string) => {
 
 const put_then_refresh = (data: PutStorage) => {
     put_store(data).then((_) => {
-        get_stores(storages)
+        flatten_cards();
     })
 }
 
 const post_then_refresh = (data: PostStorage) => {
     post_store(data).then((_) => {
-        get_stores(storages)
+        flatten_cards();
     })
 }
 
 const delete_then_refresh = (id: number) => {
     delete_store(id).then((_) => {
         opening["delete"] = false
-        get_stores(storages)
+        flatten_cards();
     })
 }
 
 onBeforeMount(() => {
-    get_stores(storages)
+    flatten_cards();
 })
 </script>
 
@@ -144,7 +149,7 @@ onBeforeMount(() => {
     </Component>
 </template>
 
-<style>
+<style lang="scss" scoped>
 .el-row {
     margin-bottom: 20px;
 }

@@ -18,12 +18,17 @@ const opening = reactive<{ [key: string]: boolean }>({
     "delete": false,
 });                                                         // 会话开关
 
+const build_table = () => {
+    get_loads().then((resp) => {
+        loads.value = resp.data.loads;
+    });
+}
+
 // 必须用闭包，
 // 模板部分无法访问完整的响应类型，不能传响应类型值
 const modify_form = (row: GetLoad) => {
     buffer.id = row.id;
     buffer.loads = row.loads;
-    buffer.load_ton = row.load_ton;
     buffer.load_date = new Date(row.load_date);
 
     opening["put"] = true
@@ -46,14 +51,14 @@ const close_form = (kind: string) => {
 
 function put_then_refresh(data: PutLoad) {
     put_load(data).then((_) => {
-        get_loads(loads)
+        build_table();
     })
 }
 
 function delete_then_refresh(id: number) {
     delete_load(id).then((_) => {
         opening["delete"] = false
-        get_loads(loads)
+        build_table();
     })
 }
 
@@ -69,7 +74,9 @@ const total_fee = computed(() => {
 });
 
 // 进入网页，先读一次数据库
-onBeforeMount(() => { get_loads(loads) })
+onBeforeMount(() => {
+    build_table();
+})
 </script>
 
 <template>

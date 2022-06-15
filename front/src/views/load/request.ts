@@ -1,37 +1,35 @@
 import { request } from '@/utils/service';
-import { GetLoad, PutLoad, PostLoad } from '@/models/index';
-import { Ref } from "vue";
+import { PutLoad, PostLoad } from '@/models/index';
+import { AxiosPromise } from 'axios';
 
-export function get_loads(receiver: Ref<GetLoad[]>) {
-    request({
+export function get_loads(): AxiosPromise<any> {
+    return request({
         url: "/load",
         method: "get",
-    }).then((resp) => {
-        receiver.value = resp.data.loads
-    })
+    });
 }
 
-export function put_load(data: PutLoad) {
+export function put_load(data: PutLoad): AxiosPromise<any> {
     return request({
         url: "/load",
         method: "put",
         data,
-    })
+    });
 }
 
-export function post_loads(loads: PostLoad[]) {
+export function post_loads(loads: PostLoad[]): AxiosPromise<any> {
     return request({
         url: "/load",
         method: "post",
         data: {
             loads,
         },
-    })
+    });
 }
 
-export function delete_load(id: number) {
+export function delete_load(id: number): AxiosPromise<any> {
     return request({
         url: `/load/${id}`,
         method: "delete",
-    })
+    });
 }
