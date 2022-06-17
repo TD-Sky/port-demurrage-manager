@@ -8,7 +8,6 @@ const state = reactive({
   fixedHeader: settingsStore.fixedHeader,
   showTagsView: settingsStore.showTagsView,
   showSidebarLogo: settingsStore.showSidebarLogo,
-  showThemeSwitch: settingsStore.showThemeSwitch,
   showScreenfull: settingsStore.showScreenfull
 })
 
@@ -40,15 +39,6 @@ watch(
   }
 )
 watch(
-  () => state.showThemeSwitch,
-  (value) => {
-    settingsStore.changeSetting({
-      key: "showThemeSwitch",
-      value
-    })
-  }
-)
-watch(
   () => state.showScreenfull,
   (value) => {
     settingsStore.changeSetting({
@@ -74,10 +64,6 @@ watch(
       <div class="drawer-item">
         <span>固定 Header</span>
         <el-switch v-model="state.fixedHeader" class="drawer-switch" />
-      </div>
-      <div class="drawer-item">
-        <span>显示换肤按钮</span>
-        <el-switch v-model="state.showThemeSwitch" class="drawer-switch" />
       </div>
       <div class="drawer-item">
         <span>显示全屏按钮</span>

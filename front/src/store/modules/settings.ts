@@ -6,7 +6,6 @@ interface ISettingsState {
   showSettings: boolean
   showTagsView: boolean
   showSidebarLogo: boolean
-  showThemeSwitch: boolean
   showScreenfull: boolean
 }
 
@@ -18,7 +17,6 @@ export const useSettingsStore = defineStore({
       showSettings: layoutSettings.showSettings,
       showTagsView: layoutSettings.showTagsView,
       showSidebarLogo: layoutSettings.showSidebarLogo,
-      showThemeSwitch: layoutSettings.showThemeSwitch,
       showScreenfull: layoutSettings.showScreenfull
     }
   },
@@ -37,9 +35,6 @@ export const useSettingsStore = defineStore({
           break
         case "showTagsView":
           this.showTagsView = value
-          break
-        case "showThemeSwitch":
-          this.showThemeSwitch = value
           break
         case "showScreenfull":
           this.showScreenfull = value

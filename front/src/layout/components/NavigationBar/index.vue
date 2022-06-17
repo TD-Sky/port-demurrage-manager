@@ -7,7 +7,6 @@ import { useUserStore } from "@/store/modules/user"
 import { UserFilled } from "@element-plus/icons-vue"
 import BreadCrumb from "../BreadCrumb/index.vue"
 import Hamburger from "../Hamburger/index.vue"
-import ThemeSwitch from "@/components/ThemeSwitch/index.vue"
 import Screenfull from "@/components/Screenfull/index.vue"
 
 const router = useRouter()
@@ -17,9 +16,6 @@ const userStore = useUserStore()
 
 const sidebar = computed(() => {
   return appStore.sidebar
-})
-const showThemeSwitch = computed(() => {
-  return settingsStore.showThemeSwitch
 })
 const showScreenfull = computed(() => {
   return settingsStore.showScreenfull
@@ -44,33 +40,11 @@ const state = reactive({
     <BreadCrumb class="breadcrumb" />
     <div class="right-menu">
       <Screenfull v-if="showScreenfull" class="right-menu-item" />
-      <ThemeSwitch v-if="showThemeSwitch" class="right-menu-item" />
       <el-dropdown class="right-menu-item">
         <el-avatar :icon="UserFilled" :size="34" />
         <template #dropdown>
           <el-dropdown-menu>
-            <a target="_blank" href="https://juejin.cn/post/7089377403717287972">
-              <el-dropdown-item>V3-Admin-Vite 中文文档</el-dropdown-item>
-            </a>
-            <a target="_blank" href="https://github.com/un-pany/v3-admin-vite">
-              <el-dropdown-item>V3-Admin-Vite GitHub</el-dropdown-item>
-            </a>
-            <a target="_blank" href="https://gitee.com/un-pany/v3-admin-vite">
-              <el-dropdown-item>V3-Admin-Vite Gitee</el-dropdown-item>
-            </a>
-            <a target="_blank" href="https://juejin.cn/post/6963876125428678693">
-              <el-dropdown-item divided>V3-Admin 中文文档</el-dropdown-item>
-            </a>
-            <a target="_blank" href="https://github.com/un-pany/v3-admin/blob/master/README.en.md">
-              <el-dropdown-item>V3-Admin English Docs</el-dropdown-item>
-            </a>
-            <a target="_blank" href="https://github.com/un-pany/v3-admin">
-              <el-dropdown-item>V3-Admin GitHub</el-dropdown-item>
-            </a>
-            <a target="_blank" href="https://gitee.com/un-pany/v3-admin">
-              <el-dropdown-item>V3-Admin Gitee</el-dropdown-item>
-            </a>
-            <el-dropdown-item divided @click="state.logout">
+            <el-dropdown-item @click="state.logout">
               <span style="display: block">退出登录</span>
             </el-dropdown-item>
           </el-dropdown-menu>
