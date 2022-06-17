@@ -15,72 +15,76 @@ const settingsStore = useSettingsStore()
 const userStore = useUserStore()
 
 const sidebar = computed(() => {
-  return appStore.sidebar
+    return appStore.sidebar
 })
 const showScreenfull = computed(() => {
-  return settingsStore.showScreenfull
+    return settingsStore.showScreenfull
 })
 
 const state = reactive({
-  toggleSideBar: () => {
-    appStore.toggleSidebar(false)
-  },
-  logout: () => {
-    userStore.logout()
-    router.push("/login").catch((err) => {
-      console.warn(err)
-    })
-  }
+    toggleSideBar: () => {
+        appStore.toggleSidebar(false)
+    },
+    logout: () => {
+        userStore.logout()
+        router.push("/login").catch((err) => {
+            console.warn(err)
+        })
+    }
 })
 </script>
 
 <template>
-  <div class="navbar">
-    <Hamburger :is-active="sidebar.opened" class="hamburger" @toggle-click="state.toggleSideBar" />
-    <BreadCrumb class="breadcrumb" />
-    <div class="right-menu">
-      <Screenfull v-if="showScreenfull" class="right-menu-item" />
-      <el-dropdown class="right-menu-item">
-        <el-avatar :icon="UserFilled" :size="34" />
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item @click="state.logout">
-              <span style="display: block">退出登录</span>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
+    <div class="navbar">
+        <Hamburger :is-active="sidebar.opened" class="hamburger" @toggle-click="state.toggleSideBar" />
+        <BreadCrumb class="breadcrumb" />
+        <div class="right-menu">
+            <Screenfull v-if="showScreenfull" class="right-menu-item" />
+            <el-dropdown class="right-menu-item">
+                <el-avatar :icon="UserFilled" :size="34" />
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <el-dropdown-item @click="state.logout">
+                            <span style="display: block">退出登录</span>
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
+        </div>
     </div>
-  </div>
 </template>
 
 <style lang="scss" scoped>
 .navbar {
-  height: var(--v3-navigationbar-height);
-  overflow: hidden;
-  background: #fff;
-  .hamburger {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    float: left;
-    padding: 0 15px;
-    cursor: pointer;
-  }
-  .breadcrumb {
-    float: left;
-  }
-  .right-menu {
-    float: right;
-    margin-right: 10px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    color: #606266;
-    .right-menu-item {
-      padding: 0 10px;
-      cursor: pointer;
+    height: var(--v3-navigationbar-height);
+    overflow: hidden;
+    background: #fff;
+
+    .hamburger {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        float: left;
+        padding: 0 15px;
+        cursor: pointer;
     }
-  }
+
+    .breadcrumb {
+        float: left;
+    }
+
+    .right-menu {
+        float: right;
+        margin-right: 10px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        color: #606266;
+
+        .right-menu-item {
+            padding: 0 10px;
+            cursor: pointer;
+        }
+    }
 }
 </style>

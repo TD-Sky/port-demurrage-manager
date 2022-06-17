@@ -86,6 +86,7 @@ const state = reactive({
 
 <style lang="scss" scoped>
 .login-container {
+    background-image: url("@/assets/layout/background.png");
     display: flex;
     justify-content: center;
     align-items: center;

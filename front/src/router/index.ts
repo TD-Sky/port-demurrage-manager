@@ -40,7 +40,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
                 name: "Store",
                 meta: {
                     title: "库存信息",
-                    icon: "dashboard",
+                    icon: "store",
                     affix: true,
                 }
             }
@@ -57,7 +57,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
                 name: "Load",
                 meta: {
                     title: "出库信息",
-                    icon: "dashboard",
+                    icon: "load",
                     affix: true
                 }
             },
@@ -82,7 +82,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
                 name: "Statistics",
                 meta: {
                     title: "统计图",
-                    icon: "dashboard",
+                    icon: "statistics",
                     affix: true,
                 }
             }
