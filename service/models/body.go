@@ -1,8 +1,7 @@
-package auth
+package models
 
 import (
 	"encoding/json"
-
 	"github.com/gin-gonic/gin"
 )
 

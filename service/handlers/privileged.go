@@ -17,19 +17,19 @@ const salt = "l9D2owwtENby"
 func Login(ctx *gin.Context) {
 	db, _ := ctx.Get("db")
 	var user models.User
-	var body auth.Body
+	var body models.Body
 
 	ctx.BindJSON(&user)
 
 	switch user_pass(db.(*sqlx.DB), user) {
 	case 0:
 		token_string, _ := auth.Gen(user.Name)
-		body = auth.Make_Body(0)
+		body = models.Make_Body(0)
 		body.Set_data("accessToken", token_string)
 	case 1:
-		body = auth.Make_Body(1)
+		body = models.Make_Body(1)
 	case 2:
-		body = auth.Make_Body(2)
+		body = models.Make_Body(2)
 	}
 
 	ctx.JSON(http.StatusOK, body)
@@ -38,7 +38,7 @@ func Login(ctx *gin.Context) {
 func Info(ctx *gin.Context) {
 	username, _ := ctx.Get("username")
 
-	body := auth.Make_Body(20000)
+	body := models.Make_Body(20000)
 
 	user_info := models.UserInfo{
 		Name:  username.(string),

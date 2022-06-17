@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 	"net/http"
-	"service/auth"
 	"service/dba"
 	"service/models"
 	"strconv"
@@ -20,16 +19,16 @@ var sf_node, _ = snowflake.NewNode(114)
 
 func Get_loads(ctx *gin.Context) {
 	db, _ := ctx.Get("db")
-	var body auth.Body
+	var body models.Body
 
 	loads := dba.Select_loads(db.(*sqlx.DB))
 
 	if fees, err := predict(db.(*sqlx.DB), loads); err != nil {
-		body = auth.Make_Body(19198)
+		body = models.Make_Body(19198)
 
 		body.Set_message(fmt.Sprint(err))
 	} else {
-		body = auth.Make_Body(20000)
+		body = models.Make_Body(20000)
 
 		for i := 0; i < len(loads); i++ {
 			loads[i].Fee = fees[i]
@@ -49,7 +48,7 @@ func Put_load(ctx *gin.Context) {
 
 	dba.Update_load(db.(*sqlx.DB), load)
 
-	body := auth.Make_Body(20000)
+	body := models.Make_Body(20000)
 
 	ctx.JSON(http.StatusOK, body)
 }
@@ -62,7 +61,7 @@ func Post_loads(ctx *gin.Context) {
 
 	dba.Insert_loads(db.(*sqlx.DB), loads.Inner, sf_node.Generate())
 
-	body := auth.Make_Body(20000)
+	body := models.Make_Body(20000)
 
 	ctx.JSON(http.StatusOK, body)
 }
@@ -74,7 +73,7 @@ func Delete_load(ctx *gin.Context) {
 
 	dba.Delete_load(db.(*sqlx.DB), int32(id))
 
-	body := auth.Make_Body(20000)
+	body := models.Make_Body(20000)
 
 	ctx.JSON(http.StatusOK, body)
 }

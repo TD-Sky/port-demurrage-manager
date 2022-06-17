@@ -5,6 +5,7 @@ import (
 	"github.com/jmoiron/sqlx"
 	"net/http"
 	"service/auth"
+	"service/models"
 )
 
 func StateContext(db *sqlx.DB) gin.HandlerFunc {
@@ -15,18 +16,18 @@ func StateContext(db *sqlx.DB) gin.HandlerFunc {
 
 func Authenticate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var body auth.Body
+		var body models.Body
 
 		token_string := ctx.Request.Header.Get("X-Access-Token")
 
 		if token_string == "" {
-			body = auth.Make_Body(1145)
+			body = models.Make_Body(1145)
 			ctx.JSON(http.StatusOK, body)
 			ctx.Abort()
 		}
 
 		if user_pl, err := auth.Parse(token_string); err != nil {
-			body = auth.Make_Body(1145)
+			body = models.Make_Body(1145)
 			ctx.JSON(http.StatusOK, body)
 			ctx.Abort()
 		} else {
