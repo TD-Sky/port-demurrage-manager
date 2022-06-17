@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, onBeforeMount, ref, computed } from 'vue';
+import { reactive, ref, computed } from 'vue';
 import { get_loads, put_load, delete_load } from './request';
 import { Edit, Plus, Delete } from '@element-plus/icons-vue';
 import { GetLoad, PutLoad } from '@/models/index';
@@ -74,9 +74,7 @@ const total_fee = computed(() => {
 });
 
 // 进入网页，先读一次数据库
-onBeforeMount(() => {
-    build_table();
-})
+build_table();
 </script>
 
 <template>
