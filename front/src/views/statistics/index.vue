@@ -21,11 +21,11 @@ const init_chart = (dims: number[], data_src: any[]) => {
     }
 
     const option: echarts.EChartsOption = {
-        // 类型不对报错，不用管
+        tooltip: {},
         dataset: {
             dimensions: dims,
             source: data_src,
-        },
+        } as echarts.DatasetComponentOption,
         xAxis: {
             type: 'category',
         },
