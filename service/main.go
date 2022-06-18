@@ -13,13 +13,16 @@ import (
 )
 
 func main() {
+    gin.SetMode(gin.ReleaseMode)
+
 	db, err := sqlx.Connect("postgres",
-		"user=postgres dbname=port-demurrage-db sslmode=disable TimeZone=Asia/Shanghai")
+		"user=postgres dbname=port_demurrage_db sslmode=disable TimeZone=Asia/Shanghai")
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	dba.Schema(db) // 建表
+	dba.Schema(db)   // 建表
+	dba.Triggers(db) // 触发器
 
 	server := gin.Default()
 	server.Use(middleware.StateContext(db))

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+// @ts-nocheck
 import { reactive, ref } from 'vue';
 import { post_loads } from './request';
 import type { FormInstance, FormRules } from 'element-plus'
@@ -21,8 +22,8 @@ const submitForm = (form_elts: FormInstance | undefined) => {
         return;
     }
 
-    Object.keys(form_elts).forEach(async (key) => {
-        const form_elt = form_elts[key]     // 报错，但不能碰
+    Object.keys(form_elts).forEach(async (key: string) => {
+        const form_elt = form_elts[key]      // 报错，但不能碰
         try {
             await form_elt.validate()
         } catch (exp) {

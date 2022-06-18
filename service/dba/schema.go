@@ -14,16 +14,11 @@ func Schema(db *sqlx.DB) {
             duration int default 0 not NULL             -- 存放天数，每日0点更新
         );
 
-        create table if not exists load
+        create table if not exists shipping_order
         (
-            id serial4 primary key,
-            order_number int4 not NULL,     -- 订单号
-            load_date date not NULL,        -- 开船日期
-            loads int4 not NULL,            -- 出库件数
-            load_ton float8 not NULL,       -- 出库吨数
-            --------------------------------------------
-            constraint order_number_fk foreign key (order_number)
-                references shipping_order(num)
+            num serial4 primary key,                -- 订单号
+            business_number serial4,                -- 业务号
+            lading_bill_number int8 not NULL        -- 提单号
         );
 
         create table if not exists load
