@@ -19,6 +19,8 @@ func main() {
 		log.Fatalln(err)
 	}
 
+	dba.Schema(db) // 建表
+
 	server := gin.Default()
 	server.Use(middleware.StateContext(db))
 
@@ -26,7 +28,7 @@ func main() {
 
 	cron := cron.New(cron.WithLocation(utils.CN))
 	cron.AddFunc("@daily", dba.Duration_inc(db)) // 计费
-	cron.AddFunc("0 8 * * *", dba.Shipment(db))       // 开船
+	cron.AddFunc("0 8 * * *", dba.Shipment(db))  // 开船
 	cron.Start()
 
 	server.Run()
