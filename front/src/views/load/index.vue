@@ -20,7 +20,11 @@ const opening = reactive<{ [key: string]: boolean }>({
 
 const build_table = () => {
     get_loads().then((resp) => {
-        loads.value = resp.data.loads;
+        if (resp.data.loads !== null) {
+            loads.value = resp.data.loads;
+        } else {
+            loads.value = [];
+        }
     });
 }
 

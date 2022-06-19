@@ -37,7 +37,7 @@ const init_chart = (dims: number[], data_src: any[]) => {
 }
 
 get_loads().then((resp) => {
-    const loads: GetLoad[] = resp.data.loads;
+    const loads: GetLoad[] = resp.data.loads !== null ? resp.data.loads : [];
     const chart_map: Map<string, number[]> = new Map();
 
     for (const load of loads) {
@@ -56,7 +56,7 @@ get_loads().then((resp) => {
         .map(fees => fees.length)
         .reduce((prev, current) => {
             return current >= prev ? current : prev;
-        });
+        }, 0);
 
     for (let i = 0; i <= max_len; i++) {
         dims.push(i);

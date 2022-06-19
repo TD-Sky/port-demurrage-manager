@@ -19,7 +19,11 @@ const remove_id = ref<number>();                          // 删除条目的ID
 
 const build_table = () => {
     get_stores().then((resp) => {
-        storages.value = resp.data.stores;
+        if (resp.data.storages !== null) {
+            storages.value = resp.data.stores;
+        } else {
+            storages.value = [];
+        }
     });
 }
 
