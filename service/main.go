@@ -13,8 +13,6 @@ import (
 )
 
 func main() {
-    gin.SetMode(gin.ReleaseMode)
-
 	db, err := sqlx.Connect("postgres",
 		"user=postgres dbname=port_demurrage_db sslmode=disable TimeZone=Asia/Shanghai")
 	if err != nil {

@@ -5,13 +5,6 @@ import (
 	"service/models"
 )
 
-func Insert_store(db *sqlx.DB, store models.PostStore) {
-	db.NamedExec(
-		`insert into store (store_date, license_plate_number, stocks, store_ton)
-             values (:store_date, :license_plate_number, :stocks, :store_ton)`,
-		store)
-}
-
 func Select_stores(db *sqlx.DB) []models.GetStore {
 	var stores []models.GetStore
 
@@ -21,6 +14,13 @@ func Select_stores(db *sqlx.DB) []models.GetStore {
          store_date ASC, stocks DESC`)
 
 	return stores
+}
+
+func Insert_store(db *sqlx.DB, store models.PostStore) {
+	db.NamedExec(
+		`insert into store (store_date, license_plate_number, stocks, store_ton)
+             values (:store_date, :license_plate_number, :stocks, :store_ton)`,
+		store)
 }
 
 func Update_store(db *sqlx.DB, store models.PutStore) {

@@ -9,6 +9,17 @@ import (
 	"strconv"
 )
 
+func Get_stores(ctx *gin.Context) {
+	db, _ := ctx.Get("db")
+
+	stores := dba.Select_stores(db.(*sqlx.DB))
+
+	body := models.Make_Body(20000)
+	body.Set_data("stores", stores)
+
+	ctx.JSON(http.StatusOK, body)
+}
+
 func Post_store(ctx *gin.Context) {
 	db, _ := ctx.Get("db")
 	var store models.PostStore
@@ -18,17 +29,6 @@ func Post_store(ctx *gin.Context) {
 	dba.Insert_store(db.(*sqlx.DB), store)
 
 	body := models.Make_Body(20000)
-
-	ctx.JSON(http.StatusOK, body)
-}
-
-func Get_store(ctx *gin.Context) {
-	db, _ := ctx.Get("db")
-
-	stores := dba.Select_stores(db.(*sqlx.DB))
-
-	body := models.Make_Body(20000)
-	body.Set_data("stores", stores)
 
 	ctx.JSON(http.StatusOK, body)
 }
