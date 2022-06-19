@@ -27,7 +27,24 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 
     {
         path: "/",
-        redirect: "/storage",
+        redirect: "/warehouse",
+    },
+
+    {
+        path: "/warehouse",
+        component: Layout,
+        children: [
+            {
+                path: "",
+                component: () => import("@/views/warehouse/index.vue"),
+                name: "Warehouse",
+                meta: {
+                    title: "场地管理",
+                    icon: "warehouse",
+                    affix: true,
+                }
+            }
+        ]
     },
 
     {
