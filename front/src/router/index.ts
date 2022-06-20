@@ -48,6 +48,23 @@ export const constantRoutes: Array<RouteRecordRaw> = [
     },
 
     {
+        path: "/company",
+        component: Layout,
+        children: [
+            {
+                path: "",
+                component: () => import("@/views/company/index.vue"),
+                name: "Company",
+                meta: {
+                    title: "货代公司",
+                    icon: "company",
+                    affix: true,
+                }
+            }
+        ]
+    },
+
+    {
         path: "/storage",
         component: Layout,
         children: [

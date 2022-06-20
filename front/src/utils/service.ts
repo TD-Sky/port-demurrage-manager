@@ -36,6 +36,9 @@ function createService() {
                     case 2:
                         ElMessage.error("密码错误");
                         return Promise.reject(new Error("Error"))
+                    case 3:
+                        ElMessage.error("该公司仍有出货订单未完成");
+                        return Promise.reject(new Error("Error"))
                     case 20000:
                         // code === 20000 代表没有错误
                         return apiData

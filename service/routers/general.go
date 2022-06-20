@@ -21,10 +21,16 @@ func General(server *gin.Engine) {
 	server.PUT("/store", authm, handlers.Put_store)
 	server.DELETE("/store/:id", authm, handlers.Delete_store)
 
+	// 货代公司
+	server.GET("/freight_forwarder", authm, handlers.Get_freight_forwarders)
+	server.POST("/freight_forwarder", authm, handlers.Post_freight_forwarder)
+	server.PUT("/freight_forwarder", authm, handlers.Put_freight_forwarder)
+	server.DELETE("/freight_forwarder/:code", authm, handlers.Delete_freight_forwarder)
+
 	// 出库信息
 	server.GET("/load", authm, handlers.Get_loads)
-	server.PUT("/load", authm, handlers.Put_load)
 	server.POST("/load", authm, handlers.Post_loads)
+	server.PUT("/load", authm, handlers.Put_load)
 	server.DELETE("/load/:id", authm, handlers.Delete_load)
 
 	// 用户信息
