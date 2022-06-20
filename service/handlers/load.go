@@ -11,10 +11,6 @@ import (
 	"strconv"
 )
 
-type postLoads struct {
-	Inner []models.PostLoad `json:"loads"`
-}
-
 var sf_node, _ = snowflake.NewNode(114)
 
 func Get_loads(ctx *gin.Context) {
@@ -55,11 +51,11 @@ func Put_load(ctx *gin.Context) {
 
 func Post_loads(ctx *gin.Context) {
 	db, _ := ctx.Get("db")
-	var loads postLoads
+	var shipping_order models.PostShippingOrder
 
-	ctx.ShouldBind(&loads)
+	ctx.ShouldBind(&shipping_order)
 
-	dba.Insert_loads(db.(*sqlx.DB), loads.Inner, sf_node.Generate())
+	dba.Insert_shipping_order(db.(*sqlx.DB), shipping_order, sf_node.Generate())
 
 	body := models.Make_Body(20000)
 

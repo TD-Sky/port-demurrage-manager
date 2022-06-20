@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { reactive, toRefs } from 'vue';
-import { PutLoad } from '@/models/index';
+import { PutLoad } from '@/models/load';
 import { isnt_future } from '@/utils/index';
 import type { FormInstance, FormRules } from 'element-plus';
+
+const FIRST_COL = "50px";
 
 // 共享状态
 const props = defineProps(["opening", "buffer"]);
@@ -49,11 +51,11 @@ async function submit_form(form_elt: FormInstance | undefined, buf: PutLoad) {
     <el-dialog v-model="opening['put']" title="出库单" @close="emits('close_form', 'put')">
         <el-form :rules="rules" ref="rule_form" :model="buffer">
 
-            <el-form-item prop="load_date" label="日期" label-width="70px">
+            <el-form-item prop="load_date" label="日期" :label-width="FIRST_COL">
                 <el-date-picker type="date" v-model="buffer.load_date" :disabled-date="isnt_future" />
             </el-form-item>
 
-            <el-form-item prop="loads" label="件数" label-width="70px">
+            <el-form-item prop="loads" label="件数" :label-width="FIRST_COL">
                 <el-input-number :min="1" :controls="false" v-model.number="buffer.loads" />
             </el-form-item>
 

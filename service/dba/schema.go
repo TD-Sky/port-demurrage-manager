@@ -32,7 +32,7 @@ func Schema(db *sqlx.DB) {
         (
             num serial4 primary key,                    -- 订单号
             business_number serial4,                    -- 业务号
-            company_code text,                          -- 公司识别码
+            company_code text not NULL,                 -- 公司识别码
             lading_bill_number int8 not NULL,           -- 提单号
             --------------------------------------------
             constraint company_code_fk foreign key (company_code)

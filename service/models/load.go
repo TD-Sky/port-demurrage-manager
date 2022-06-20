@@ -17,6 +17,7 @@ type GetLoad struct {
 	Loads              int32     `db:"loads"`
 	Load_ton           float64   `db:"load_ton"`
 	Business_number    int32     `db:"business_number"`
+	Company_code       string    `db:"company_code"`
 	Lading_bill_number int64     `db:"lading_bill_number"`
 	Fee                float64
 }
@@ -29,7 +30,7 @@ func (self GetLoad) MarshalJSON() ([]byte, error) {
 		"load_ton":           self.Load_ton,
 		"load_date":          utils.China_date(self.Load_date),
 		"business_number":    fmt.Sprintf("LLH%07d", self.Business_number),
-		"lading_bill_number": self.Lading_bill_number,
+		"lading_bill_number": fmt.Sprint(self.Company_code, self.Lading_bill_number),
 		"fee":                self.Fee,
 	}
 
@@ -61,6 +62,12 @@ func (self *PostLoad) UnmarshalJSON(data []byte) error {
 	self.Load_ton = 0.05 * float64(load.Loads)
 
 	return nil
+}
+
+// 反序列化用
+type PostShippingOrder struct {
+	Company_code string     `json:"company_code"`
+	Loads        []PostLoad `json:"loads"`
 }
 
 /* 修改 */

@@ -10,7 +10,8 @@ func Select_loads(db *sqlx.DB) []models.GetLoad {
 	var loads []models.GetLoad
 
 	db.Select(&loads,
-		`select id, order_number, load_date, loads, load_ton, business_number, lading_bill_number
+		`select id, order_number, load_date, loads,
+                load_ton, business_number,company_code, lading_bill_number
             from shipping_order
             left join load
             on num = order_number
@@ -29,22 +30,22 @@ func Update_load(db *sqlx.DB, load models.PutLoad) {
 		load)
 }
 
-func Insert_loads(db *sqlx.DB, loads []models.PostLoad, sfid snowflake.ID) {
+func Insert_shipping_order(db *sqlx.DB, shipping_order models.PostShippingOrder, sfid snowflake.ID) {
 	var order_number int32
 
 	db.QueryRow(
-		`insert into shipping_order (lading_bill_number)
-            values ($1) returning num`, sfid).
+		`insert into shipping_order (company_code, lading_bill_number)
+            values ($1, $2) returning num`, shipping_order.Company_code, sfid).
 		Scan(&order_number)
 
-	for i := 0; i < len(loads); i++ {
-		loads[i].Order_number = order_number
+	for i := 0; i < len(shipping_order.Loads); i++ {
+		shipping_order.Loads[i].Order_number = order_number
 	}
 
 	db.NamedExec(
 		`insert into load (order_number, load_date, loads, load_ton)
             values (:order_number, :load_date, :loads, :load_ton)`,
-		loads)
+		shipping_order.Loads)
 }
 
 func Delete_load(db *sqlx.DB, id int32) {

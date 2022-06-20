@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive, ref, computed } from 'vue';
-import { get_loads, put_load, delete_load } from './request';
+import { get_dataset, put_data, delete_data } from '@/api/crud';
 import { Edit, Plus, Delete } from '@element-plus/icons-vue';
-import { GetLoad, PutLoad } from '@/models/index';
+import { GetLoad, PutLoad } from '@/models/load';
 import { useRouter } from 'vue-router';
 import PutForm from './PutForm.vue';
 import DelDialog from './DelDialog.vue';
@@ -19,7 +19,7 @@ const opening = reactive<{ [key: string]: boolean }>({
 });                                                         // 会话开关
 
 const build_table = () => {
-    get_loads().then((resp) => {
+    get_dataset("/load").then((resp) => {
         if (resp.data.loads !== null) {
             loads.value = resp.data.loads;
         } else {
@@ -54,21 +54,24 @@ const close_form = (kind: string) => {
 }
 
 function put_then_refresh(data: PutLoad) {
-    put_load(data).then((_) => {
+    put_data("/load", data).then((_) => {
         build_table();
     })
 }
 
 function delete_then_refresh(id: number) {
-    delete_load(id).then((_) => {
+    delete_data("/load", id).then((_) => {
         opening["delete"] = false
         build_table();
     })
 }
 
 const total_fee = computed(() => {
-    // 迭代器写法会卡刷新
+    // 迭代器写法会卡刷新，打咩
+    // return loads.value.map(load => load.fee).reduce((x, sum) => x + sum)
+
     let sum = 0
+
 
     for (const item of loads.value) {
         sum += item.fee
@@ -85,16 +88,16 @@ build_table();
     <Component>
         <div class="app-container">
 
-            <div class="loads_table">
+            <div class="loads-table">
                 <el-table :data="loads" border :fit="false" max-height="1000">
-                    <el-table-column header-align="center" prop="load_date" label="日期" width="120" />
-                    <el-table-column header-align="center" prop="loads" label="件数" width="120" />
-                    <el-table-column header-align="center" prop="load_ton" label="吨数" width="120" />
-                    <el-table-column align="center" prop="business_number" label="业务号" width="150" />
-                    <el-table-column align="center" prop="lading_bill_number" label="提单号" width="180" />
-                    <el-table-column align="center" prop="order_number" label="订单号" width="150" />
-                    <el-table-column header-align="center" prop="fee" label="堆存费" width="120" />
-                    <el-table-column align="center" label="操作" width="180">
+                    <el-table-column header-align="center" prop="load_date" label="日期" width="100" />
+                    <el-table-column header-align="center" prop="loads" label="件数" width="100" />
+                    <el-table-column header-align="center" prop="load_ton" label="吨数" width="100" />
+                    <el-table-column align="center" prop="business_number" label="业务号" width="110" />
+                    <el-table-column align="center" prop="lading_bill_number" label="提单号" width="300" />
+                    <el-table-column align="center" prop="order_number" label="订单号" width="115" />
+                    <el-table-column header-align="center" prop="fee" label="堆存费" width="100" />
+                    <el-table-column align="center" label="操作" width="150">
                         <template #default="scope">
                             <el-button type="primary" @click="modify_form(scope.row)" :icon="Edit" />
                             <el-button type="danger" @click="remove_item(scope.row.id)" :icon="Delete" />
@@ -103,16 +106,16 @@ build_table();
                 </el-table>
             </div>
 
-            <div class="total_fee">
+            <div class="total-fee">
                 <el-descriptions border>
-                    <el-descriptions-item label="预付堆存费" width="840px">
+                    <el-descriptions-item label="预付堆存费" width="61.7%">
                         {{ total_fee }}
                     </el-descriptions-item>
                 </el-descriptions>
             </div>
         </div>
 
-        <div class="handle-button" @click="new_form">
+        <div class="plus-button" @click="new_form">
             <el-icon :size="24">
                 <Plus />
             </el-icon>
@@ -127,30 +130,11 @@ build_table();
 </template>
 
 <style lang="scss" scoped>
-.handle-button {
-    width: 48px;
-    height: 48px;
-    background-color: #5f9ea0;
-    position: absolute;
-    right: 0px;
-    text-align: center;
-    font-size: 24px;
-    border-radius: 6px 0 0 6px !important;
-    z-index: 10;
-    cursor: pointer;
-    pointer-events: auto;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: 300px;
+.loads-table {
+    width: 100%;
 }
 
-.loads_table {
-    width: 85.4%;
-}
-
-.total_fee {
-    width: 85.3%;
+.total-fee {
+    width: 100%;
 }
 </style>
