@@ -10,12 +10,12 @@ import DelDialog from './DelDialog.vue';
 
 const storages = ref<GetStorage[]>([])                    // 库存信息数组
 const buffer = reactive(<PutStorage>{});                  // 表单填写缓冲区
-const opening = reactive<{ [key: string]: boolean }>({
-    "post": false,
-    "put": false,
-    "delete": false,
-});                                                       // 会话开关
 const remove_id = ref<number>();                          // 删除条目的ID
+
+// 显示对话框的函数
+const show_post = ref(false);
+const show_put = ref(false);
+const show_delete = ref(false);
 
 const build_table = () => {
     get_dataset("/store").then((resp) => {
@@ -33,20 +33,13 @@ const modify_form = (storage: GetStorage) => {
     buffer.license_plate_number = storage.license_plate_number;
     buffer.store_date = new Date(storage.store_date)
 
-    opening["put"] = true;
-}
-
-const new_form = () => {
-    opening["post"] = true;
+    show_put.value = true;
 }
 
 const remove_item = (id: number) => {
     remove_id.value = id
-    opening["delete"] = true
-}
 
-const close_form = (kind: string) => {
-    opening[kind] = false
+    show_delete.value = true;
 }
 
 const put_then_refresh = (data: PutStorage) => {
@@ -63,7 +56,7 @@ const post_then_refresh = (data: PostStorage) => {
 
 const delete_then_refresh = (id: number) => {
     delete_data("store", id).then((_) => {
-        opening["delete"] = false
+        show_delete.value = false;
         build_table();
     })
 }
@@ -93,18 +86,18 @@ build_table();
                 </el-table>
             </div>
 
-            <div class="plus-button" @click="new_form">
+            <div class="plus-button" @click="show_post = true">
                 <el-icon :size="24">
                     <Plus />
                 </el-icon>
             </div>
 
-            <PutForm :opening="opening" :buffer="buffer" @close_form="close_form"
+            <PostForm :show_post="show_post" @close_form="show_post = false" @post_then_refresh="post_then_refresh" />
+
+            <PutForm :show_put="show_put" :buffer="buffer" @close_form="show_put = false"
                 @put_then_refresh="put_then_refresh" />
 
-            <PostForm :opening="opening" @close_form="close_form" @post_then_refresh="post_then_refresh" />
-
-            <DelDialog :opening="opening" :remove_id="remove_id" @close_form="close_form"
+            <DelDialog :show_delete="show_delete" :remove_id="remove_id" @close_form="show_delete = false"
                 @delete_then_refresh="delete_then_refresh" />
         </div>
     </Component>

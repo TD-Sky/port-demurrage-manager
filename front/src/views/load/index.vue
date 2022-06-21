@@ -13,10 +13,10 @@ const router = useRouter();
 const loads = ref<GetLoad[]>([]);                           // 出货单
 const buffer = reactive(<PutLoad>{});                       // 表单修改缓冲区
 const remove_id = ref<number>();                            // 删除条目的ID
-const opening = reactive<{ [key: string]: boolean }>({
-    "put": false,
-    "delete": false,
-});                                                         // 会话开关
+
+// 显示对话框的函数
+const show_put = ref(false);
+const show_delete = ref(false);
 
 const build_table = () => {
     get_dataset("/load").then((resp) => {
@@ -35,22 +35,17 @@ const modify_form = (row: GetLoad) => {
     buffer.loads = row.loads;
     buffer.load_date = new Date(row.load_date);
 
-    opening["put"] = true
+    show_put.value = true;
 }
 
 const new_form = () => {
-    router.push("/load/post")
+    router.push('/load/post');
 }
 
 const remove_item = (id: number) => {
     remove_id.value = id
-    opening["delete"] = true
-}
 
-// 子组件修改父组件状态不会生效！！！
-// 必须靠 emits 触发此函数
-const close_form = (kind: string) => {
-    opening[kind] = false
+    show_delete.value = true;
 }
 
 function put_then_refresh(data: PutLoad) {
@@ -61,7 +56,7 @@ function put_then_refresh(data: PutLoad) {
 
 function delete_then_refresh(id: number) {
     delete_data("/load", id).then((_) => {
-        opening["delete"] = false
+        show_delete.value = true;
         build_table();
     })
 }
@@ -71,7 +66,6 @@ const total_fee = computed(() => {
     // return loads.value.map(load => load.fee).reduce((x, sum) => x + sum)
 
     let sum = 0
-
 
     for (const item of loads.value) {
         sum += item.fee
@@ -121,9 +115,11 @@ build_table();
             </el-icon>
         </div>
 
-        <PutForm :opening="opening" :buffer="buffer" @close_form="close_form" @put_then_refresh="put_then_refresh" />
 
-        <DelDialog :opening="opening" :remove_id="remove_id" @close_form="close_form"
+        <PutForm :show_put="show_put" :buffer="buffer" @close_form="show_put = false"
+            @put_then_refresh="put_then_refresh" />
+
+        <DelDialog :show_delete="show_delete" :remove_id="remove_id" @close_form="show_delete = false"
             @delete_then_refresh="delete_then_refresh" />
 
     </Component>

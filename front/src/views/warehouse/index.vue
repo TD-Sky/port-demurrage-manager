@@ -89,7 +89,7 @@ build_table();
 
             <PostForm :show_post="show_post" @close_form="show_post = false" @post_then_refresh="post_then_refresh" />
 
-            <PutForm :show_put="show_put" :buffer="buffer" @close_form="show_put = true"
+            <PutForm :show_put="show_put" :buffer="buffer" @close_form="show_put = false"
                 @put_then_refresh="put_then_refresh" />
 
             <DelDialog :show_delete="show_delete" :remove_name="remove_name" @close_form="show_delete = false"

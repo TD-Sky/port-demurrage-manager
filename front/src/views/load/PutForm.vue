@@ -1,55 +1,26 @@
 <script setup lang="ts">
-import { reactive, toRefs } from 'vue';
+import { toRefs } from 'vue';
 import { PutLoad } from '@/models/load';
 import { isnt_future } from '@/utils/index';
-import type { FormInstance, FormRules } from 'element-plus';
 
 const FIRST_COL = "50px";
 
 // 共享状态
-const props = defineProps(["opening", "buffer"]);
-const { opening, buffer } = toRefs(props);
+const props = defineProps(["show_put", "buffer"]);
+const { show_put, buffer } = toRefs(props);
 
 // 将触发的父组件函数
 const emits = defineEmits(["close_form", "put_then_refresh"]);
 
-const rule_form = reactive(<FormInstance>{});
-const rules = reactive<FormRules>({
-    load_date: [
-        {
-            type: "date",
-            required: true,
-            message: "选择未来日期",
-            trigger: "change",
-        }
-    ],
-
-    loads: [
-        {
-            type: "number",
-            required: true,
-            message: "输入正整数",
-            trigger: "change",
-        }
-    ],
-})
-
-// 只能子组件执行，父组件收不到参数。
-// 传入的是响应类型内部值
-async function submit_form(form_elt: FormInstance | undefined, buf: PutLoad) {
-    if (!form_elt) return
-    await form_elt.validate((valid, _) => {
-        if (valid) {
-            emits("close_form", 'put')
-            emits("put_then_refresh", buf)
-        }
-    })
+const submit = (buf: PutLoad) => {
+    emits("close_form")
+    emits("put_then_refresh", buf)
 }
 </script>
 
 <template>
-    <el-dialog v-model="opening['put']" title="出库单" @close="emits('close_form', 'put')">
-        <el-form :rules="rules" ref="rule_form" :model="buffer">
+    <el-dialog v-model="show_put" title="出库单" @close="emits('close_form')">
+        <el-form :model="buffer">
 
             <el-form-item prop="load_date" label="日期" :label-width="FIRST_COL">
                 <el-date-picker type="date" v-model="buffer.load_date" :disabled-date="isnt_future" />
@@ -63,7 +34,7 @@ async function submit_form(form_elt: FormInstance | undefined, buf: PutLoad) {
 
         <template #footer>
             <span class="dialog-footer">
-                <el-button type="primary" @click="submit_form(rule_form, buffer)">
+                <el-button type="primary" @click="submit(buffer)">
                     提交
                 </el-button>
             </span>

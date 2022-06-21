@@ -11,11 +11,10 @@ const companies = ref<FreightForwarder[]>([]);          // 表格数据
 const buffer = reactive(<FreightForwarder>{});          // 表单填写缓冲区
 const remove_code = ref<string>();                      // 删除条目的ID
 
-const opening = reactive<{ [key: string]: boolean }>({
-    "post": false,
-    "put": false,
-    "delete": false,
-});                                                       // 会话开关
+// 显示对话框的函数
+const show_post = ref(false);
+const show_put = ref(false);
+const show_delete = ref(false);
 
 const build_table = () => {
     get_dataset("/freight_forwarder").then((resp) => {
@@ -32,24 +31,13 @@ const modify_form = (company: FreightForwarder) => {
     buffer.company_name = company.company_name;
     buffer.telephone_number = company.telephone_number;
 
-    opening["put"] = true;
-}
-
-const new_form = () => {
-    buffer.code = "";
-    buffer.company_name = "";
-    buffer.telephone_number = "";
-
-    opening["post"] = true;
+    show_put.value = true;
 }
 
 const remove_item = (house_name: string) => {
     remove_code.value = house_name;
-    opening["delete"] = true;
-}
 
-const close_form = (kind: string) => {
-    opening[kind] = false
+    show_delete.value = true;
 }
 
 const put_then_refresh = (data: FreightForwarder) => {
@@ -66,7 +54,7 @@ const post_then_refresh = (data: FreightForwarder) => {
 
 const delete_then_refresh = (code: string) => {
     delete_data("/freight_forwarder", code).then((_) => {
-        opening["delete"] = false;
+        show_delete.value = false;
         build_table();
     })
 }
@@ -92,19 +80,18 @@ build_table();
                 </el-table>
             </div>
 
-            <div class="plus-button" @click="new_form">
+            <div class="plus-button" @click="show_post = true">
                 <el-icon :size="24">
                     <Plus />
                 </el-icon>
             </div>
 
-            <PutForm :opening="opening" :buffer="buffer" @close_form="close_form"
+            <PostForm :show_post="show_post" @close_form="show_post = false" @post_then_refresh="post_then_refresh" />
+
+            <PutForm :show_put="show_put" :buffer="buffer" @close_form="show_put = false"
                 @put_then_refresh="put_then_refresh" />
 
-            <PostForm :opening="opening" :buffer="buffer" @close_form="close_form"
-                @post_then_refresh="post_then_refresh" />
-
-            <DelDialog :opening="opening" :remove_code="remove_code" @close_form="close_form"
+            <DelDialog :show_delete="show_delete" :remove_code="remove_code" @close_form="show_delete = false"
                 @delete_then_refresh="delete_then_refresh" />
         </div>
     </Component>
