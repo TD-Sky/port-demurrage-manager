@@ -25,7 +25,7 @@ func Schema(db *sqlx.DB) {
         (
             code text primary key,                      -- 识别码
             company_name text not NULL,                 -- 名字
-            telephone_number char(11) not NULL          -- 联系方式
+            telephone_number varchar(11) not NULL       -- 联系方式
         );
 
         create table if not exists shipping_order
