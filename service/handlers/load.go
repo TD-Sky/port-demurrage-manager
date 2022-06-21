@@ -83,9 +83,11 @@ func Get_stat_load_map(ctx *gin.Context) {
 	loads := dba.Select_loads(db.(*sqlx.DB))
 	fees, err := predict(db.(*sqlx.DB), loads)
 
-    // 没数据，loads就是nil了
-	if err != nil || loads == nil {
+	if loads == nil { // 没数据，loads就是nil了
+		body = models.Make_Body(4) // 拒绝统计
+	} else if err != nil {
 		body = models.Make_Body(19198)
+		body.Set_message(fmt.Sprint(err))
 	} else {
 		body = models.Make_Body(20000)
 

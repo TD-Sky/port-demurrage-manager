@@ -32,18 +32,21 @@ function createService() {
                         return apiData
                     case 1:
                         ElMessage.error("用户不存在");
-                        return Promise.reject(new Error("Error"))
+                        return Promise.reject(new Error("Error"));
                     case 2:
                         ElMessage.error("密码错误");
-                        return Promise.reject(new Error("Error"))
+                        return Promise.reject(new Error("Error"));
                     case 3:
                         ElMessage.error("该公司仍有出货订单未完成");
-                        return Promise.reject(new Error("Error"))
-                    case 20000:
-                        // code === 20000 代表没有错误
-                        return apiData
+                        return Promise.reject(new Error("Error"));
+                    case 4:
+                        ElMessage.error("无出库信息可供统计");
+                        return Promise.reject(new Error("Error"));
                     case 19198:
                         ElMessage.error(`库存不够啦，可能断货于${apiData.msg}之前`)
+                        return apiData
+                    case 20000:
+                        // code === 20000 代表没有错误
                         return apiData
                     default:
                         // 不是正确的 code

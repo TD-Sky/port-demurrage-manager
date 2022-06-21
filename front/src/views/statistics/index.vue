@@ -45,25 +45,23 @@ const init_chart = (code: string) => {
     bar_chart.setOption(option);
 }
 
-// 获取所有货代公司
-get_dataset("/freight_forwarder").then((resp) => {
-    if (resp.data.companies !== null) {
-        companies.value = (resp.data.companies as FreightForwarder[])
-            .map(ff => ({
-                code: ff.code,
-                name: ff.company_name,
-            }));
-    } else {
-        companies.value = [];
-    }
-});
-
 get_dataset("/stat_load").then((resp) => {
-
     if (resp.data.load_map !== null) {
-        Object.assign(load_map, resp.data.load_map)
-    } else {
-        return
+        Object.assign(load_map, resp.data.load_map);
+
+        const cpns = Object.keys(load_map);
+
+        // 获取所有货代公司
+        get_dataset("/freight_forwarder").then((resp) => {
+            if (resp.data.companies !== null) {
+                companies.value = (resp.data.companies as FreightForwarder[])
+                    .filter(ff => cpns.includes(ff.code))
+                    .map(ff => ({
+                        code: ff.code,
+                        name: ff.company_name,
+                    }));
+            }
+        });
     }
 });
 
