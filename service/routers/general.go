@@ -33,6 +33,9 @@ func General(server *gin.Engine) {
 	server.PUT("/load", authm, handlers.Put_load)
 	server.DELETE("/load/:id", authm, handlers.Delete_load)
 
+    // 出库信息统计
+    server.GET("/stat_load", authm, handlers.Get_stat_load_map)
+
 	// 用户信息
 	users_grp := server.Group("/users")
 	{

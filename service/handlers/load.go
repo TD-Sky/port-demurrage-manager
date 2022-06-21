@@ -18,8 +18,9 @@ func Get_loads(ctx *gin.Context) {
 	var body models.Body
 
 	loads := dba.Select_loads(db.(*sqlx.DB))
+	fees, err := predict(db.(*sqlx.DB), loads)
 
-	if fees, err := predict(db.(*sqlx.DB), loads); err != nil {
+	if err != nil {
 		body = models.Make_Body(19198)
 
 		body.Set_message(fmt.Sprint(err))
@@ -70,6 +71,32 @@ func Delete_load(ctx *gin.Context) {
 	dba.Delete_load(db.(*sqlx.DB), int32(id))
 
 	body := models.Make_Body(20000)
+
+	ctx.JSON(http.StatusOK, body)
+}
+
+func Get_stat_load_map(ctx *gin.Context) {
+	db, _ := ctx.Get("db")
+	var body models.Body
+	var load_map models.StatLoadMap
+
+	loads := dba.Select_loads(db.(*sqlx.DB))
+	fees, err := predict(db.(*sqlx.DB), loads)
+
+    // 没数据，loads就是nil了
+	if err != nil || loads == nil {
+		body = models.Make_Body(19198)
+	} else {
+		body = models.Make_Body(20000)
+
+		for i := 0; i < len(loads); i++ {
+			loads[i].Fee = fees[i]
+		}
+
+		load_map = models.To_StatLoadMap(loads)
+
+		body.Set_data("load_map", load_map)
+	}
 
 	ctx.JSON(http.StatusOK, body)
 }
