@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, toRefs } from 'vue';
-import { PostStorage } from '@/models/index';
+import { PostStorage } from '@/models/storage';
 import type { FormInstance, FormRules } from 'element-plus';
 import { isnt_future } from '@/utils/index';
 

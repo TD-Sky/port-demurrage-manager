@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, toRefs } from 'vue';
-import { PutStorage } from '@/models/index';
+import { PutStorage } from '@/models/storage';
 import type { FormInstance, FormRules } from 'element-plus';
 import { isnt_future } from '@/utils/index';
 
@@ -56,6 +56,7 @@ async function submit_form(form_elt: FormInstance | undefined, buf: PutStorage) 
 </script>
 
 <template>
+
     <el-dialog v-model="opening['put']" title="入库单" @close="emits('close_form', 'put')">
         <el-form :rules="rules" ref="rule_form" :model="buffer">
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { GetStorage, PutStorage, PostStorage } from '@/models/index';
-import { get_stores, post_store, put_store, delete_store } from './request';
+import { GetStorage, PutStorage, PostStorage } from '@/models/storage';
+import { get_dataset, post_data, put_data, delete_data } from '@/api/crud';
 import { fees_incurred } from '@/utils/index';
 import { ref, reactive } from "vue";
 import { Edit, Plus, Delete } from '@element-plus/icons-vue';
@@ -18,7 +18,7 @@ const opening = reactive<{ [key: string]: boolean }>({
 const remove_id = ref<number>();                          // 删除条目的ID
 
 const build_table = () => {
-    get_stores().then((resp) => {
+    get_dataset("/store").then((resp) => {
         if (resp.data.storages !== null) {
             storages.value = resp.data.stores;
         } else {
@@ -50,19 +50,19 @@ const close_form = (kind: string) => {
 }
 
 const put_then_refresh = (data: PutStorage) => {
-    put_store(data).then((_) => {
+    put_data("/store", data).then((_) => {
         build_table();
     })
 }
 
 const post_then_refresh = (data: PostStorage) => {
-    post_store(data).then((_) => {
+    post_data("/store", data).then((_) => {
         build_table();
     })
 }
 
 const delete_then_refresh = (id: number) => {
-    delete_store(id).then((_) => {
+    delete_data("store", id).then((_) => {
         opening["delete"] = false
         build_table();
     })
@@ -93,7 +93,7 @@ build_table();
                 </el-table>
             </div>
 
-            <div class="handle-button" @click="new_form">
+            <div class="plus-button" @click="new_form">
                 <el-icon :size="24">
                     <Plus />
                 </el-icon>
@@ -111,25 +111,6 @@ build_table();
 </template>
 
 <style lang="scss" scoped>
-.handle-button {
-    width: 48px;
-    height: 48px;
-    background-color: #5f9ea0;
-    position: absolute;
-    right: 0px;
-    text-align: center;
-    font-size: 24px;
-    border-radius: 6px 0 0 6px !important;
-    z-index: 10;
-    cursor: pointer;
-    pointer-events: auto;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: 300px;
-}
-
 .stores-table {
     width: 100%;
 }
