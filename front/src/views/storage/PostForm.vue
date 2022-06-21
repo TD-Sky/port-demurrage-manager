@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { reactive, toRefs } from 'vue';
+import { toRefs } from 'vue';
 import { PostStorage } from '@/models/storage';
 import { isnt_future } from '@/utils/index';
 
 const FIRST_COL = "70px";
 
 // 共享状态
-const props = defineProps(["show_post"]);
-const { show_post } = toRefs(props);
-
-const buffer = reactive(<PostStorage>{});
+const props = defineProps(["show_post", "buffer"]);
+const { show_post, buffer } = toRefs(props);
 
 // 将触发的父组件函数
 const emits = defineEmits(["close_form", "post_then_refresh"]);

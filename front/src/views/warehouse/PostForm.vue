@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { reactive, toRefs } from 'vue';
+import { toRefs } from 'vue';
 import { Warehouse } from '@/models/warehouse';
 
 const FIRST_COL = "50px";
 
 // 共享状态
-const props = defineProps(["show_post"]);
-const { show_post } = toRefs(props);
-
-const buffer = reactive(<Warehouse>{});
+const props = defineProps(["show_post", "buffer"]);
+const { show_post, buffer } = toRefs(props);
 
 // 将触发的父组件函数
 const emits = defineEmits(["close_form", "post_then_refresh"]);
@@ -32,7 +30,7 @@ const submit = (buf: Warehouse) => {
             </el-form-item>
 
             <el-form-item prop="area" label="面积" :label-width="FIRST_COL">
-                <el-input-number :min="1" :controls="false" v-model.number="buffer.area" />
+                <el-input-number :min="0" :controls="false" v-model.number="buffer.area" />
                 <div style="margin-left: 20px;">
                     m<sup>2</sup>
                 </div>

@@ -9,7 +9,7 @@ import PostForm from './PostForm.vue';
 import DelDialog from './DelDialog.vue';
 
 const storages = ref<GetStorage[]>([])                    // 库存信息数组
-const buffer = reactive(<PutStorage>{});                  // 表单填写缓冲区
+const buffer = reactive(<PutStorage | PostStorage>{});                  // 表单填写缓冲区
 const remove_id = ref<number>();                          // 删除条目的ID
 
 // 显示对话框的函数
@@ -27,8 +27,18 @@ const build_table = () => {
     });
 }
 
+const new_form = () => {
+    // @ts-ignore
+    buffer.stocks = null;
+    buffer.license_plate_number = "";
+    // @ts-ignore
+    buffer.store_date = null;
+
+    show_post.value = true;
+}
+
 const modify_form = (storage: GetStorage) => {
-    buffer.id = storage.id;
+    (buffer as PutStorage).id = storage.id;
     buffer.stocks = storage.stocks;
     buffer.license_plate_number = storage.license_plate_number;
     buffer.store_date = new Date(storage.store_date)
@@ -86,13 +96,14 @@ build_table();
                 </el-table>
             </div>
 
-            <div class="plus-button" @click="show_post = true">
+            <div class="plus-button" @click="new_form">
                 <el-icon :size="24">
                     <Plus />
                 </el-icon>
             </div>
 
-            <PostForm :show_post="show_post" @close_form="show_post = false" @post_then_refresh="post_then_refresh" />
+            <PostForm :show_post="show_post" :buffer="buffer" @close_form="show_post = false"
+                @post_then_refresh="post_then_refresh" />
 
             <PutForm :show_put="show_put" :buffer="buffer" @close_form="show_put = false"
                 @put_then_refresh="put_then_refresh" />

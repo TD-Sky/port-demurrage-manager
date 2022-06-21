@@ -34,6 +34,15 @@ const modify_form = (warehouse: Warehouse) => {
     show_put.value = true;
 }
 
+const new_form = () => {
+    buffer.house_name = "";
+    buffer.address = "";
+    // @ts-ignore
+    buffer.area = null;
+
+    show_post.value = true;
+}
+
 const remove_item = (house_name: string) => {
     remove_name.value = house_name;
 
@@ -81,13 +90,14 @@ build_table();
             </div>
 
             <!-- 侧栏添加条目按钮 -->
-            <div class="plus-button" @click="show_post = true">
+            <div class="plus-button" @click="new_form">
                 <el-icon :size="24">
                     <Plus />
                 </el-icon>
             </div>
 
-            <PostForm :show_post="show_post" @close_form="show_post = false" @post_then_refresh="post_then_refresh" />
+            <PostForm :show_post="show_post" :buffer="buffer" @close_form="show_post = false"
+                @post_then_refresh="post_then_refresh" />
 
             <PutForm :show_put="show_put" :buffer="buffer" @close_form="show_put = false"
                 @put_then_refresh="put_then_refresh" />

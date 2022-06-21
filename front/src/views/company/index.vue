@@ -26,6 +26,14 @@ const build_table = () => {
     });
 }
 
+const new_form = () => {
+    buffer.code = "";
+    buffer.company_name = "";
+    buffer.telephone_number = "";
+
+    show_post.value = true;
+}
+
 const modify_form = (company: FreightForwarder) => {
     buffer.code = company.code;
     buffer.company_name = company.company_name;
@@ -80,13 +88,14 @@ build_table();
                 </el-table>
             </div>
 
-            <div class="plus-button" @click="show_post = true">
+            <div class="plus-button" @click="new_form">
                 <el-icon :size="24">
                     <Plus />
                 </el-icon>
             </div>
 
-            <PostForm :show_post="show_post" @close_form="show_post = false" @post_then_refresh="post_then_refresh" />
+            <PostForm :show_post="show_post" :buffer="buffer" @close_form="show_post = false"
+                @post_then_refresh="post_then_refresh" />
 
             <PutForm :show_put="show_put" :buffer="buffer" @close_form="show_put = false"
                 @put_then_refresh="put_then_refresh" />

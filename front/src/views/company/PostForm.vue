@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { reactive, toRefs } from 'vue';
+import { toRefs } from 'vue';
 import { FreightForwarder } from '@/models/freight_forwarder';
 
 const FIRST_COL = "80px";
 
 // 共享状态
-const props = defineProps(["show_post"]);
-const { show_post } = toRefs(props);
-
-const buffer = reactive(<FreightForwarder>{});
+const props = defineProps(["show_post", "buffer"]);
+const { show_post, buffer } = toRefs(props);
 
 // 将触发的父组件函数
 const emits = defineEmits(["close_form", "post_then_refresh"]);
