@@ -56,7 +56,7 @@ function put_then_refresh(data: PutLoad) {
 
 function delete_then_refresh(id: number) {
     delete_data("/load", id).then((_) => {
-        show_delete.value = true;
+        show_delete.value = false;
         build_table();
     })
 }
