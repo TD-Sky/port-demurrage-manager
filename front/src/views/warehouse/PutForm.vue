@@ -4,8 +4,8 @@ import { Warehouse } from '@/models/warehouse';
 import type { FormInstance, FormRules } from 'element-plus';
 
 // 共享状态
-const props = defineProps(["opening", "buffer"]);
-const { opening, buffer } = toRefs(props);
+const props = defineProps(["show_put", "buffer"]);
+const { show_put, buffer } = toRefs(props);
 
 // 将触发的父组件函数
 const emits = defineEmits(["close_form", "put_then_refresh"]);
@@ -55,7 +55,7 @@ async function submit_form(form_elt: FormInstance | undefined, buf: Warehouse) {
 </script>
 
 <template>
-    <el-dialog v-model="opening['put']" width="30%" title="修改场地信息" @close="emits('close_form', 'put')">
+    <el-dialog v-model="show_put" width="30%" title="修改场地信息" @close="emits('close_form')">
         <el-form :rules="rules" ref="rule_form" :model="buffer">
 
             <el-form-item prop="address" label="地址" :label-width="label_width">

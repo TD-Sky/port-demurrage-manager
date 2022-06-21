@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Warehouse } from '@/models/warehouse';
-import { get_warehouses, post_warehouse, put_warehouse, delete_warehouse } from './request';
+import { get_dataset, post_data, put_data, delete_data } from '@/api/crud';
 import { ref, reactive } from "vue";
 import { Edit, Plus, Delete } from '@element-plus/icons-vue';
 import PutForm from './PutForm.vue';
@@ -11,14 +11,13 @@ const warehouses = ref<Warehouse[]>([]);                // 表格数据
 const buffer = reactive(<Warehouse>{});                 // 表单填写缓冲区
 const remove_name = ref<string>();                      // 删除条目的ID
 
-const opening = reactive<{ [key: string]: boolean }>({
-    "post": false,
-    "put": false,
-    "delete": false,
-});                                                       // 会话开关
+// 显示对话框的函数
+const show_post = ref(false);
+const show_put = ref(false);
+const show_delete = ref(false);
 
 const build_table = () => {
-    get_warehouses().then((resp) => {
+    get_dataset("/warehouse").then((resp) => {
         if (resp.data.warehouses !== null) {
             warehouses.value = resp.data.warehouses;
         } else {
@@ -32,37 +31,30 @@ const modify_form = (warehouse: Warehouse) => {
     buffer.address = warehouse.address;
     buffer.area = warehouse.area;
 
-    opening["put"] = true;
-}
-
-const new_form = () => {
-    opening["post"] = true;
+    show_put.value = true;
 }
 
 const remove_item = (house_name: string) => {
     remove_name.value = house_name;
-    opening["delete"] = true;
-}
 
-const close_form = (kind: string) => {
-    opening[kind] = false
+    show_delete.value = true;
 }
 
 const put_then_refresh = (data: Warehouse) => {
-    put_warehouse(data).then((_) => {
+    put_data("/warehouse", data).then((_) => {
         build_table();
     })
 }
 
 const post_then_refresh = (data: Warehouse) => {
-    post_warehouse(data).then((_) => {
+    post_data("/warehouse", data).then((_) => {
         build_table();
     })
 }
 
 const delete_then_refresh = (house_name: string) => {
-    delete_warehouse(house_name).then((_) => {
-        opening["delete"] = false;
+    delete_data("/warehouse", house_name).then((_) => {
+        show_delete.value = false;
         build_table();
     })
 }
@@ -88,18 +80,19 @@ build_table();
                 </el-table>
             </div>
 
-            <div class="plus-button" @click="new_form">
+            <!-- 侧栏添加条目按钮 -->
+            <div class="plus-button" @click="show_post = true">
                 <el-icon :size="24">
                     <Plus />
                 </el-icon>
             </div>
 
-            <PutForm :opening="opening" :buffer="buffer" @close_form="close_form"
+            <PostForm :show_post="show_post" @close_form="show_post = false" @post_then_refresh="post_then_refresh" />
+
+            <PutForm :show_put="show_put" :buffer="buffer" @close_form="show_put = true"
                 @put_then_refresh="put_then_refresh" />
 
-            <PostForm :opening="opening" @close_form="close_form" @post_then_refresh="post_then_refresh" />
-
-            <DelDialog :opening="opening" :remove_name="remove_name" @close_form="close_form"
+            <DelDialog :show_delete="show_delete" :remove_name="remove_name" @close_form="show_delete = false"
                 @delete_then_refresh="delete_then_refresh" />
         </div>
     </Component>

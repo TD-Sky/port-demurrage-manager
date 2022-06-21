@@ -4,8 +4,8 @@ import { Warehouse } from '@/models/warehouse';
 import type { FormInstance, FormRules } from 'element-plus';
 
 // 共享状态
-const props = defineProps(["opening"]);
-const { opening } = toRefs(props);
+const props = defineProps(["show_post"]);
+const { show_post } = toRefs(props);
 
 const buffer = reactive(<Warehouse>{});
 
@@ -49,7 +49,7 @@ async function submit_form(form_elt: FormInstance | undefined, buf: Warehouse) {
     if (!form_elt) return
     await form_elt.validate((valid, _) => {
         if (valid) {
-            emits("close_form", 'post')
+            emits("close_form")
             emits("post_then_refresh", buf)
         }
     })
@@ -57,7 +57,7 @@ async function submit_form(form_elt: FormInstance | undefined, buf: Warehouse) {
 </script>
 
 <template>
-    <el-dialog v-model="opening['post']" width="30%" title="新增场地" @close="emits('close_form', 'post')">
+    <el-dialog v-model="show_post" width="30%" title="新增场地" @close="emits('close_form')">
         <el-form :rules="rules" ref="rule_form" :model="buffer">
 
             <el-form-item prop="house_name" label="名字" :label-width="label_width">
